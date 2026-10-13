@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title id="page-title">स्कैम साथी | Scam Saathi - संदिग्ध मैसेज की सुरक्षित जाँच</title>
+  <meta name="description" id="meta-description" content="मोबाइल पर संदिग्ध मैसेज, SMS या व्हाट्सएप लिंक की तुरंत, मुफ्त और सुरक्षित ऑन-डिवाइस जाँच। नो एआई, नो सर्वर, 100% प्राइवेट।">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  
+  <!-- Google Fonts: Noto Sans Devanagari + Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0b1120;
+      --bg-card: #131c31;
+      --bg-card-subtle: #1e293b;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #cbd5e1;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.35);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: rgba(239, 68, 68, 0.45);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.12);
+      --warning-border: rgba(245, 158, 11, 0.45);
+      --safe: #10b981;
+      --safe-bg: rgba(16, 185, 129, 0.12);
+      --safe-border: rgba(16, 185, 129, 0.45);
+      --saffron: #f97316;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, var(--bg-main) 70%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 14px 40px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Top Bar: Live Status & Language Switch */
+    .top-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .offline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      color: #6ee7b7;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .offline-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* Segmented Sliding Language Toggle */
+    .lang-switch-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .lang-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      padding: 3px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      user-select: none;
+    }
+
+    .lang-btn {
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 6px 14px;
+      min-width: 72px;
+      text-align: center;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      font-family: inherit;
+    }
+
+    .lang-btn.active {
+      color: #ffffff;
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: #cbd5e1;
+    }
+
+    .lang-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      width: calc(50% - 3px);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-radius: 999px;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .lang-switch[data-active="en"] .lang-slider {
+      transform: translateX(100%);
+    }
+
+    /* Top Header Bar */
+    header {
+      text-align: center;
+      padding: 4px 6px 4px;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.35);
+      color: #fed7aa;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+    }
+
+    .brand-badge span.dot {
+      width: 8px;
+      height: 8px;
+      background: #f97316;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #f97316;
+    }
+
+    .brand-title {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.25;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .brand-title img {
+      width: 38px;
+      height: 38px;
+    }
+
+    .brand-subtitle {
+      font-size: 17px;
+      color: var(--text-sub);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Trust Pill */
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #6ee7b7;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* Main Input Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .input-label {
+      font-size: 19px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-sub);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+    }
+
+    textarea#message-input {
+      width: 100%;
+      min-height: 145px;
+      background: #090e1a;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 19px;
+      line-height: 1.5;
+      resize: vertical;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+
+    textarea#message-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+
+    textarea#message-input::placeholder {
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .input-tip {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Big Action Check Button */
+    .btn-primary {
+      width: 100%;
+      min-height: 58px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Quick Test Sample Chips */
+    .sample-section {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sample-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-sub);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .chip.scam-chip {
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .chip.safe-chip {
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #86efac;
+    }
+
+    /* Result Card */
+    #result-container {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      border-width: 2px;
+      border-style: solid;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Color States */
+    .result-card.scam {
+      background: linear-gradient(180deg, #240e13 0%, var(--bg-card) 100%);
+      border-color: var(--danger-border);
+    }
+
+    .result-card.suspicious {
+      background: linear-gradient(180deg, #251705 0%, var(--bg-card) 100%);
+      border-color: var(--warning-border);
+    }
+
+    .result-card.low_risk {
+      background: linear-gradient(180deg, #092318 0%, var(--bg-card) 100%);
+      border-color: var(--safe-border);
+    }
+
+    .result-card.empty-state {
+      background: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .result-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .scam .result-top-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.5);
+    }
+
+    .suspicious .result-top-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.5);
+    }
+
+    .low_risk .result-top-badge {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+    }
+
+    .result-headline {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .result-explanation {
+      font-size: 17.5px;
+      color: #e2e8f0;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Reasons List */
+    .reasons-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .box-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .reasons-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .reasons-list li {
+      font-size: 16px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+
+    .reasons-list li::before {
+      content: "•";
+      color: var(--saffron);
+      font-size: 22px;
+      line-height: 16px;
+    }
+
+    /* Steps Box */
+    .steps-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .steps-list li {
+      font-size: 16.5px;
+      color: #f1f5f9;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .step-num {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* Helpline 1930 Emergency Action */
+    .helpline-action-box {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(249, 115, 22, 0.2));
+      border: 1.5px solid rgba(239, 68, 68, 0.4);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .helpline-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fecaca;
+      margin-bottom: 10px;
+    }
+
+    .btn-call-1930 {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 54px;
+      background: #dc2626;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: 800;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-call-1930:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    .btn-call-1930:active {
+      transform: translateY(1px);
+    }
+
+    .official-portals-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .portal-link {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.2s ease;
+    }
+
+    .portal-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #bfdbfe;
+    }
+
+    /* Privacy Banner */
+    .privacy-banner {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 15px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .privacy-banner svg {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      fill: #3b82f6;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Notification Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <!-- Top Bar: Offline Status + Language Switcher Slider -->
+      <div class="top-nav-bar">
+        <div class="offline-badge">
+          <span class="offline-dot"></span>
+          <span id="offline-badge-text">100% ऑफ़लाइन सुरक्षित</span>
+        </div>
+        <div class="lang-switch-wrapper">
+          <div class="lang-switch" id="lang-switch" data-active="hi" role="group" aria-label="Language selection">
+            <button type="button" class="lang-btn active" id="lang-btn-hi" data-lang="hi" aria-pressed="true">
+              हिन्दी
+            </button>
+            <button type="button" class="lang-btn" id="lang-btn-en" data-lang="en" aria-pressed="false">
+              English
+            </button>
+            <span class="lang-slider" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-badge" id="brand-badge">
+        <span class="dot"></span>
+        <span id="badge-text">Hack for Social Cause 2027 • Digital Safety</span>
+      </div>
+      <h1 class="brand-title">
+        <img src="icon.svg" alt="Scam Saathi Shield Logo">
+        <span id="brand-title-text">स्कैम साथी (Scam Saathi)</span>
+      </h1>
+      <p class="brand-subtitle" id="brand-subtitle">संदिग्ध मैसेज, SMS और लिंक की तुरंत ऑन-डिवाइस जाँच</p>
+      
+      <div class="trust-pill" id="trust-pill">
+        🛡️ 100% प्राइवेट • कोई डेटा आपके फ़ोन से बाहर नहीं जाता
+      </div>
+    </header>
+
+    <!-- Checker Input Card -->
+    <main class="card">
+      <div class="input-label-row">
+        <label for="message-input" class="input-label">
+          <span>📨</span> <span id="input-label-text">संदिग्ध मैसेज यहाँ डालें:</span>
+        </label>
+        <div class="input-actions">
+          <button type="button" class="btn-secondary" id="paste-btn" title="क्लिपबोर्ड से पेस्ट करें">
+            📋 <span id="paste-btn-text">पेस्ट करें</span>
+          </button>
+          <button type="button" class="btn-secondary" id="clear-btn" title="मैसेज साफ़ करें">
+            ✕ <span id="clear-btn-text">साफ़</span>
+          </button>
+        </div>
+      </div>
+
+      <textarea 
+        id="message-input" 
+        placeholder="यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश या इंग्लिश)"
+        aria-label="संदिग्ध मैसेज इनपुट"
+        rows="5"
+      ></textarea>
+
+      <div class="input-tip">
+        💡 <span id="input-tip-text">सुझाव: आप अपने कीबोर्ड के माइक से भी बोलकर टाइप कर सकते हैं।</span>
+      </div>
+
+      <button type="button" class="btn-primary" id="check-btn">
+        🔍 <span id="check-btn-text">मैसेज की जाँच करें (Check)</span>
+      </button>
+
+      <!-- Quick Test Chips -->
+      <div class="sample-section">
+        <div class="sample-title">
+          <span id="sample-title-text">⚡ तुरंत टेस्ट करने के लिए उदाहरण चुनें:</span>
+        </div>
+        <div class="chips-container" id="chips-container">
+          <button type="button" class="chip scam-chip" data-sample="electricity">
+            ⚡ बिजली कनेक्शन कटने की धमकी
+          </button>
+          <button type="button" class="chip scam-chip" data-sample="bank">
+            🏦 बैंक खाता ब्लॉक / PAN अपडेट
+          </button>
+          <button type="button" class="chip scam-chip" data-sample="refund">
+            💸 गलती से Paytm ट्रांसफर झांसा
+          </button>
+          <button type="button" class="chip scam-chip" data-sample="job">
+            💼 YouTube लाइक कमाई झांसा
+          </button>
+          <button type="button" class="chip scam-chip" data-sample="lottery">
+            🎁 KBC ₹25 लाख लॉटरी
+          </button>
+          <button type="button" class="chip safe-chip" data-sample="delivery">
+            📦 स्विगी/ज़ोमैटो डिलीवरी OTP (सुरक्षित)
+          </button>
+          <button type="button" class="chip safe-chip" data-sample="safe_bank">
+            💳 बैंक सुरक्षित SMS (सुरक्षित)
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Dynamic Result Container -->
+    <section id="result-container" aria-live="polite">
+      <div class="result-card" id="result-card">
+        
+        <div class="result-top-badge" id="result-badge">
+          <span id="result-badge-icon">🛑</span>
+          <span id="result-badge-text">ठगी का ख़तरा</span>
+          <span id="result-score-tag" style="opacity: 0.8; font-size: 13px; margin-left: 4px;"></span>
+        </div>
+
+        <h2 class="result-headline" id="result-headline">
+          ठगी का ख़तरा! इस पर भरोसा न करें।
+        </h2>
+
+        <p class="result-explanation" id="result-explanation">
+          असली बैंक, सरकारी विभाग या कंपनी आपसे कभी OTP, पिन या पासवर्ड नहीं मांगती।
+        </p>
+
+        <!-- Red Flags -->
+        <div class="reasons-box" id="reasons-box">
+          <div class="box-title" id="reasons-box-title">
+            <span>🚩</span> <span id="reasons-title-text">यह मैसेज क्यों संदिग्ध लगा?</span>
+          </div>
+          <ul class="reasons-list" id="reasons-list">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="steps-box" id="steps-box">
+          <div class="box-title" id="steps-box-title">
+            <span>✅</span> <span id="steps-title-text">आपको तुरंत क्या करना चाहिए?</span>
+          </div>
+          <ul class="steps-list" id="steps-list">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+
+        <!-- 1930 Emergency Helpline Box (shown for scam/suspicious) -->
+        <div class="helpline-action-box" id="helpline-box">
+          <div class="helpline-title" id="helpline-title">
+            🚨 अगर आपने जानकारी या पैसे दे दिए हैं, तो तुरंत मदद लें:
+          </div>
+          <a href="tel:1930" class="btn-call-1930" id="call-1930-btn">
+            📞 1930 पर तुरंत कॉल करें (फ्री हेल्पलाइन)
+          </a>
+          <div class="official-portals-row">
+            <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" class="portal-link">
+              🌐 cybercrime.gov.in
+            </a>
+            <a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener noreferrer" class="portal-link">
+              📱 संचार साथी 'चक्षु'
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Privacy Shield Note -->
+    <div class="privacy-banner">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+      </svg>
+      <div>
+        <strong id="privacy-title">गोपनीयता की गारंटी:</strong> <span id="privacy-desc">आपका मैसेज इसी फ़ोन में जाँचा जाता है, कहीं भेजा नहीं जाता। नो एआई मॉडल, नो सर्वर, कोई डेटा लीक नहीं हो सकता।</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p id="footer-line1">स्कैम साथी (Scam Saathi) • राष्ट्रीय साइबर सुरक्षा एवं जन-जागरूकता पहल</p>
+      <p id="footer-line2" style="margin-top: 4px;">ओपन सोर्स (MIT लाइसेंस) • नागरिक सुरक्षा हेतु समर्पित</p>
+    </footer>
+  </div>
+
+  <div id="toast" role="status"></div>
+
+  <!-- Detection Engine Scripts -->
+  <script src="js/rules.js"></script>
+  <script src="js/engine.js"></script>
+
+  <script>
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // Bilingual Dictionary
+    const I18N = {
+      hi: {
+        page_title: "स्कैम साथी | Scam Saathi - संदिग्ध मैसेज की सुरक्षित जाँच",
+        meta_desc: "मोबाइल पर संदिग्ध मैसेज, SMS या व्हाट्सएप लिंक की तुरंत, मुफ्त और सुरक्षित ऑन-डिवाइस जाँच। नो एआई, नो सर्वर, 100% प्राइवेट।",
+        offline_badge: "100% ऑफ़लाइन सुरक्षित",
+        badge: "Hack for Social Cause 2027 • Digital Safety",
+        brand_title: "स्कैम साथी (Scam Saathi)",
+        brand_subtitle: "संदिग्ध मैसेज, SMS और लिंक की तुरंत ऑन-डिवाइस जाँच",
+        trust_pill: "🛡️ 100% प्राइवेट • कोई डेटा आपके फ़ोन से बाहर नहीं जाता",
+        input_label: "संदिग्ध मैसेज यहाँ डालें:",
+        paste_btn: "पेस्ट करें",
+        clear_btn: "साफ़",
+        placeholder: "यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश या इंग्लिश)",
+        tip: "सुझाव: आप अपने कीबोर्ड के माइक से भी बोलकर टाइप कर सकते हैं।",
+        check_btn: "मैसेज की जाँच करें (Check)",
+        sample_title: "⚡ तुरंत टेस्ट करने के लिए उदाहरण चुनें:",
+        reasons_title: "यह मैसेज क्यों संदिग्ध लगा?",
+        steps_title: "आपको तुरंत क्या करना चाहिए?",
+        helpline_title: "🚨 अगर आपने जानकारी या पैसे दे दिए हैं, तो तुरंत मदद लें:",
+        call_1930_btn: "📞 1930 पर तुरंत कॉल करें (फ्री हेल्पलाइन)",
+        privacy_title: "गोपनीयता की गारंटी:",
+        privacy_desc: "आपका मैसेज इसी फ़ोन में जाँचा जाता है, कहीं भेजा नहीं जाता। नो एआई मॉडल, नो सर्वर, कोई डेटा लीक नहीं हो सकता।",
+        footer_line1: "स्कैम साथी (Scam Saathi) • राष्ट्रीय साइबर सुरक्षा एवं जन-जागरूकता पहल",
+        footer_line2: "ओपन सोर्स (MIT लाइसेंस) • नागरिक सुरक्षा हेतु समर्पित",
+        toast_pasted: "📋 मैसेज पेस्ट कर दिया गया",
+        toast_empty_clip: "क्लिपबोर्ड खाली है",
+        toast_paste_manual: "कृपया इनपुट बॉक्स में पेस्ट करें",
+        toast_cleared: "साफ़ कर दिया गया",
+        toast_empty_input: "कृपया जाँचने के लिए मैसेज लिखें या पेस्ट करें",
+        engine_not_loaded: "जाँच इंजन लोड नहीं हो सका। कृपया पेज रीफ़्रेश करें।",
+        score_label: "स्कोर",
+        badge_scam: "ठगी का ख़तरा!",
+        badge_suspicious: "सावधान रहें, संदिग्ध",
+        badge_safe: "कोई ख़तरे का संकेत नहीं मिला",
+        badge_empty: "मैसेज खाली है",
+        samples: {
+          electricity: {
+            label: "⚡ बिजली कनेक्शन कटने की धमकी",
+            text: "बिजली विभाग: आज रात 9:30 बजे आपकी बिजली काट दी जाएगी क्योंकि पिछले महीने का बिल बकाया है। तुरंत 9876543210 पर संपर्क करें।"
+          },
+          bank: {
+            label: "🏦 बैंक खाता ब्लॉक / PAN अपडेट",
+            text: "Dear customer your SBI account will be blocked today. Update your PAN immediately at http://sbi-pan-update.xyz"
+          },
+          refund: {
+            label: "💸 गलती से Paytm ट्रांसफर झांसा",
+            text: "Sir galti se aapke Paytm mein 10000 rupaye transfer ho gaye, please paisa wapas kar do. Number: 9876543210"
+          },
+          job: {
+            label: "💼 YouTube लाइक कमाई झांसा",
+            text: "Earn 3000 per day by liking YouTube videos. Work from home part time. Contact on WhatsApp: 9876543210"
+          },
+          lottery: {
+            label: "🎁 KBC ₹25 लाख लॉटरी",
+            text: "बधाई हो! आपने ₹25 लाख की केबीसी लॉटरी जीती है। इनाम पाने के लिए आज ही 9876543210 पर संपर्क करें और टैक्स जमा करें।"
+          },
+          delivery: {
+            label: "📦 स्विगी/ज़ोमैटो डिलीवरी OTP (सुरक्षित)",
+            text: "Your OTP for Swiggy delivery is 4829. Share it only with the delivery partner upon arrival."
+          },
+          safe_bank: {
+            label: "💳 बैंक सुरक्षित SMS (सुरक्षित)",
+            text: "Rs 500 credited to your a/c XX1234 on 11-Oct. Avl Bal Rs 12,340. Never share your OTP with anyone. -SBI"
+          }
+        }
+      },
+      en: {
+        page_title: "Scam Saathi - Instant On-Device Cyber Scam Checker",
+        meta_desc: "Instant, free, on-device safety check for suspicious SMS, WhatsApp and links. Zero AI models, zero cloud servers, 100% private.",
+        offline_badge: "100% Offline & Safe",
+        badge: "Hack for Social Cause 2027 • Digital Safety",
+        brand_title: "Scam Saathi (स्कैम साथी)",
+        brand_subtitle: "Instant, on-device safety check for suspicious SMS, WhatsApp & links",
+        trust_pill: "🛡️ 100% Private • No data ever leaves your device",
+        input_label: "Paste or enter suspicious message:",
+        paste_btn: "Paste",
+        clear_btn: "Clear",
+        placeholder: "Paste any suspicious SMS, WhatsApp message, or link here... (English, Hindi, or Hinglish)",
+        tip: "Tip: You can also use your keyboard's microphone for voice typing.",
+        check_btn: "Check Message Safety",
+        sample_title: "⚡ Tap a real-world example to test instantly:",
+        reasons_title: "Why this looks suspicious (Red Flags):",
+        steps_title: "What you should do right now:",
+        helpline_title: "🚨 If you shared info or sent money, get immediate help:",
+        call_1930_btn: "📞 Call 1930 Cyber Helpline (Toll-Free)",
+        privacy_title: "Privacy Guarantee:",
+        privacy_desc: "Your message is analyzed 100% locally on this device. Zero AI models, zero cloud servers, zero risk of data leakage.",
+        footer_line1: "Scam Saathi • National Cyber Safety & Citizen Awareness Initiative",
+        footer_line2: "Open Source (MIT License) • Dedicated to Digital Public Safety",
+        toast_pasted: "📋 Message pasted",
+        toast_empty_clip: "Clipboard is empty",
+        toast_paste_manual: "Please paste into the input box",
+        toast_cleared: "Cleared",
+        toast_empty_input: "Please enter or paste a message to analyze",
+        engine_not_loaded: "Detection engine could not load. Please refresh the page.",
+        score_label: "Score",
+        badge_scam: "High Scam Risk!",
+        badge_suspicious: "Caution: Suspicious",
+        badge_safe: "No Threat Indicators Found",
+        badge_empty: "Message is empty",
+        samples: {
+          electricity: {
+            label: "⚡ Electricity Disconnection Threat",
+            text: "Electricity Department: Your electricity power will be disconnected tonight at 9:30 PM due to unpaid bill. Immediately contact power officer at 9876543210"
+          },
+          bank: {
+            label: "🏦 Bank Account Block / PAN Link",
+            text: "Dear customer your SBI account will be blocked today. Update your PAN immediately at http://sbi-pan-update.xyz"
+          },
+          refund: {
+            label: "💸 Accidental Paytm Transfer Scam",
+            text: "Sir by mistake Rs 10000 was transferred to your Paytm account, please refund the money urgently. Phone: 9876543210"
+          },
+          job: {
+            label: "💼 Like YouTube Videos Part-Time Job",
+            text: "Earn 3000 per day by liking YouTube videos. Work from home part time. Contact on WhatsApp: 9876543210"
+          },
+          lottery: {
+            label: "🎁 KBC ₹25 Lakh Lottery",
+            text: "Congratulations! You won Rs 25 Lakh in KBC Lucky Draw. Contact 9876543210 today to claim your prize and deposit registration fee."
+          },
+          delivery: {
+            label: "📦 Swiggy/Zomato OTP (Safe)",
+            text: "Your OTP for Swiggy delivery is 4829. Share it only with the delivery partner upon arrival."
+          },
+          safe_bank: {
+            label: "💳 Official Bank Alert (Safe)",
+            text: "Rs 500 credited to your a/c XX1234 on 11-Oct. Avl Bal Rs 12,340. Never share your OTP with anyone. -SBI"
+          }
+        }
+      }
+    };
+
+    // State Variables
+    let currentLang = 'hi';
+    let lastResult = null;
+
+    // DOM Elements
+    const pageTitle = document.getElementById('page-title');
+    const metaDescription = document.getElementById('meta-description');
+    const langSwitch = document.getElementById('lang-switch');
+    const langBtnHi = document.getElementById('lang-btn-hi');
+    const langBtnEn = document.getElementById('lang-btn-en');
+    const offlineBadgeText = document.getElementById('offline-badge-text');
+    const badgeText = document.getElementById('badge-text');
+    const brandTitleText = document.getElementById('brand-title-text');
+    const brandSubtitle = document.getElementById('brand-subtitle');
+    const trustPill = document.getElementById('trust-pill');
+
+    const inputLabelText = document.getElementById('input-label-text');
+    const pasteBtnText = document.getElementById('paste-btn-text');
+    const clearBtnText = document.getElementById('clear-btn-text');
+    const messageInput = document.getElementById('message-input');
+    const inputTipText = document.getElementById('input-tip-text');
+    const checkBtnText = document.getElementById('check-btn-text');
+    const sampleTitleText = document.getElementById('sample-title-text');
+    const chipsContainer = document.getElementById('chips-container');
+
+    const pasteBtn = document.getElementById('paste-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const checkBtn = document.getElementById('check-btn');
+
+    const resultContainer = document.getElementById('result-container');
+    const resultCard = document.getElementById('result-card');
+    const resultBadgeIcon = document.getElementById('result-badge-icon');
+    const resultBadgeText = document.getElementById('result-badge-text');
+    const resultScoreTag = document.getElementById('result-score-tag');
+    const resultHeadline = document.getElementById('result-headline');
+    const resultExplanation = document.getElementById('result-explanation');
+    const reasonsBox = document.getElementById('reasons-box');
+    const reasonsTitleText = document.getElementById('reasons-title-text');
+    const reasonsList = document.getElementById('reasons-list');
+    const stepsBox = document.getElementById('steps-box');
+    const stepsTitleText = document.getElementById('steps-title-text');
+    const stepsList = document.getElementById('steps-list');
+    const helplineBox = document.getElementById('helpline-box');
+    const helplineTitle = document.getElementById('helpline-title');
+    const call1930Btn = document.getElementById('call-1930-btn');
+
+    const privacyTitle = document.getElementById('privacy-title');
+    const privacyDesc = document.getElementById('privacy-desc');
+    const footerLine1 = document.getElementById('footer-line1');
+    const footerLine2 = document.getElementById('footer-line2');
+    const toast = document.getElementById('toast');
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // Set Language Switcher Function
+    function setLanguage(lang) {
+      if (lang !== 'hi' && lang !== 'en') lang = 'hi';
+      const prevLang = currentLang;
+      currentLang = lang;
+      try {
+        localStorage.setItem('scam_saathi_lang', lang);
+      } catch (e) {}
+
+      document.documentElement.lang = lang;
+      langSwitch.setAttribute('data-active', lang);
+      if (lang === 'hi') {
+        langBtnHi.classList.add('active');
+        langBtnHi.setAttribute('aria-pressed', 'true');
+        langBtnEn.classList.remove('active');
+        langBtnEn.setAttribute('aria-pressed', 'false');
+      } else {
+        langBtnEn.classList.add('active');
+        langBtnEn.setAttribute('aria-pressed', 'true');
+        langBtnHi.classList.remove('active');
+        langBtnHi.setAttribute('aria-pressed', 'false');
+      }
+
+      const t = I18N[lang];
+      pageTitle.textContent = t.page_title;
+      metaDescription.setAttribute('content', t.meta_desc);
+      offlineBadgeText.textContent = t.offline_badge;
+      badgeText.textContent = t.badge;
+      brandTitleText.textContent = t.brand_title;
+      brandSubtitle.textContent = t.brand_subtitle;
+      trustPill.textContent = t.trust_pill;
+
+      inputLabelText.textContent = t.input_label;
+      pasteBtnText.textContent = t.paste_btn;
+      clearBtnText.textContent = t.clear_btn;
+      messageInput.setAttribute('placeholder', t.placeholder);
+      inputTipText.textContent = t.tip;
+      checkBtnText.textContent = t.check_btn;
+      sampleTitleText.textContent = t.sample_title;
+
+      reasonsTitleText.textContent = t.reasons_title;
+      stepsTitleText.textContent = t.steps_title;
+      helplineTitle.textContent = t.helpline_title;
+      call1930Btn.textContent = t.call_1930_btn;
+
+      privacyTitle.textContent = t.privacy_title;
+      privacyDesc.textContent = t.privacy_desc;
+      footerLine1.textContent = t.footer_line1;
+      footerLine2.textContent = t.footer_line2;
+
+      // Update Sample Chips Labels
+      document.querySelectorAll('.chip').forEach(chip => {
+        const type = chip.getAttribute('data-sample');
+        if (t.samples[type]) {
+          chip.textContent = t.samples[type].label;
+        }
+      });
+
+      // If text area holds a sample message from previous language, update it
+      const currentVal = messageInput.value.trim();
+      if (currentVal && prevLang && I18N[prevLang]) {
+        for (const type of Object.keys(I18N[prevLang].samples)) {
+          if (currentVal === I18N[prevLang].samples[type].text.trim()) {
+            messageInput.value = t.samples[type].text;
+            break;
+          }
+        }
+      }
+
+      // If results are currently visible, re-render in new language immediately
+      if (lastResult && resultContainer.style.display !== 'none') {
+        displayResult(lastResult);
+      }
+    }
+
+    // Toggle button event listeners
+    langBtnHi.addEventListener('click', () => setLanguage('hi'));
+    langBtnEn.addEventListener('click', () => setLanguage('en'));
+
+    // Sample chip click handlers
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const type = chip.getAttribute('data-sample');
+        const t = I18N[currentLang];
+        if (t.samples[type]) {
+          messageInput.value = t.samples[type].text;
+          runAnalysis();
+          messageInput.focus();
+        }
+      });
+    });
+
+    // Paste from clipboard
+    pasteBtn.addEventListener('click', async () => {
+      const t = I18N[currentLang];
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            messageInput.value = text;
+            showToast(t.toast_pasted);
+            runAnalysis();
+          } else {
+            showToast(t.toast_empty_clip);
+          }
+        } else {
+          messageInput.focus();
+          showToast(t.toast_paste_manual);
+        }
+      } catch (err) {
+        messageInput.focus();
+        showToast(t.toast_paste_manual);
+      }
+    });
+
+    // Clear text
+    clearBtn.addEventListener('click', () => {
+      const t = I18N[currentLang];
+      messageInput.value = '';
+      lastResult = null;
+      resultContainer.style.display = 'none';
+      messageInput.focus();
+      showToast(t.toast_cleared);
+    });
+
+    // Run Checker Analysis
+    function runAnalysis() {
+      const t = I18N[currentLang];
+      const text = messageInput.value.trim();
+      if (!text) {
+        showToast(t.toast_empty_input);
+        messageInput.focus();
+        return;
+      }
+
+      if (typeof ScamSaathi === 'undefined' || !ScamSaathi.analyze) {
+        alert(t.engine_not_loaded);
+        return;
+      }
+
+      const res = ScamSaathi.analyze(text);
+      lastResult = res;
+      displayResult(res);
+    }
+
+    // Display Result with Language Selection Support
+    function displayResult(res) {
+      const isEn = currentLang === 'en';
+      const t = I18N[currentLang];
+
+      resultContainer.style.display = 'block';
+      resultCard.className = 'result-card ' + res.verdict;
+
+      // Status Badge & Icons
+      if (res.verdict === 'scam') {
+        resultBadgeIcon.textContent = '🛑';
+        resultBadgeText.textContent = isEn 
+          ? (res.categoryNameEn || t.badge_scam)
+          : (res.categoryNameHi || t.badge_scam);
+        resultScoreTag.textContent = `(${t.score_label}: ${res.score})`;
+      } else if (res.verdict === 'suspicious') {
+        resultBadgeIcon.textContent = '⚠️';
+        resultBadgeText.textContent = isEn 
+          ? (res.categoryNameEn || t.badge_suspicious)
+          : (res.categoryNameHi || t.badge_suspicious);
+        resultScoreTag.textContent = `(${t.score_label}: ${res.score})`;
+      } else if (res.verdict === 'low_risk') {
+        resultBadgeIcon.textContent = '🛡️';
+        resultBadgeText.textContent = t.badge_safe;
+        resultScoreTag.textContent = '';
+      } else {
+        resultBadgeIcon.textContent = 'ℹ️';
+        resultBadgeText.textContent = t.badge_empty;
+        resultScoreTag.textContent = '';
+      }
+
+      resultHeadline.textContent = isEn 
+        ? (res.headlineEn || res.headlineHi || '') 
+        : (res.headlineHi || res.headlineEn || '');
+
+      resultExplanation.textContent = isEn 
+        ? (res.explanationEn || res.explanationHi || '') 
+        : (res.explanationHi || res.explanationEn || '');
+
+      // Red Flags / Reasons
+      const reasons = isEn 
+        ? (res.reasonsEn && res.reasonsEn.length ? res.reasonsEn : res.reasonsHi)
+        : (res.reasonsHi && res.reasonsHi.length ? res.reasonsHi : res.reasonsEn);
+
+      reasonsList.innerHTML = '';
+      if (reasons && reasons.length > 0) {
+        reasonsBox.style.display = 'block';
+        reasons.forEach(reason => {
+          const li = document.createElement('li');
+          li.textContent = reason;
+          reasonsList.appendChild(li);
+        });
+      } else {
+        reasonsBox.style.display = 'none';
+      }
+
+      // Next Steps
+      const steps = isEn 
+        ? (res.stepsEn && res.stepsEn.length ? res.stepsEn : res.stepsHi)
+        : (res.stepsHi && res.stepsHi.length ? res.stepsHi : res.stepsEn);
+
+      stepsList.innerHTML = '';
+      if (steps && steps.length > 0) {
+        stepsBox.style.display = 'block';
+        steps.forEach((step, idx) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="step-num">${idx + 1}</span> <span>${escapeHtml(step)}</span>`;
+          stepsList.appendChild(li);
+        });
+      } else {
+        stepsBox.style.display = 'none';
+      }
+
+      // 1930 Helpline Box
+      if (res.verdict === 'scam' || res.verdict === 'suspicious') {
+        helplineBox.style.display = 'block';
+      } else {
+        helplineBox.style.display = 'none';
+      }
+
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    checkBtn.addEventListener('click', runAnalysis);
+
+    // Ctrl+Enter or Cmd+Enter to run check
+    messageInput.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        runAnalysis();
+      }
+    });
+
+    // Initialize with stored or default language
+    let initialLang = 'hi';
+    try {
+      const stored = localStorage.getItem('scam_saathi_lang');
+      if (stored === 'en' || stored === 'hi') initialLang = stored;
+    } catch (e) {}
+    setLanguage(initialLang);
+  </script>
+</body>
+</html>

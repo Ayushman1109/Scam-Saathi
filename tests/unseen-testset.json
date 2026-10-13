@@ -1,0 +1,163 @@
+[
+  {
+    "id": "u01",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": ["upi_refund", "info_request"],
+    "text": "UPI पिन डालें to receive Rs 4000. तुरंत अपने खाते में पैसे प्राप्त करें।"
+  },
+  {
+    "id": "u02",
+    "lang": "english",
+    "expected": "scam",
+    "category": "job_offer",
+    "text": "Earn 3000 per day by liking YouTube videos. Work from home part time. Contact on WhatsApp now."
+  },
+  {
+    "id": "u03",
+    "lang": "english",
+    "expected": "scam",
+    "category": "sim_kyc",
+    "text": "Dear customer, your Aadhaar suspicious activity detected. Verify on WhatsApp: 9876543210 immediately."
+  },
+  {
+    "id": "u04",
+    "lang": "english",
+    "expected": "scam",
+    "category": "electricity",
+    "text": "Power will be cut tonight at 9:30 PM due to unpaid electricity bill. Call electricity officer at 9876543210."
+  },
+  {
+    "id": "u05",
+    "lang": "english",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "Your son had an accident and is admitted in hospital. Police custody pending, send 50000 rupees immediately."
+  },
+  {
+    "id": "u06",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your OTP for Swiggy delivery is 4829. Share it only with the delivery partner upon arrival."
+  },
+  {
+    "id": "u07",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "आपका जोमैटो डिलीवरी कोड 5831 है। यह कोड सिर्फ डिलीवरी बॉय को बताएं।"
+  },
+  {
+    "id": "u08",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "electricity",
+    "text": "बिजली विभाग: आज रात 9 बजे आपकी बिजली काट दी जाएगी क्योंकि बिल बकाया है। तुरंत संपर्क करें 9876543210"
+  },
+  {
+    "id": "u09",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "job_offer",
+    "text": "घर बैठे पार्ट टाइम जॉब करके रोज 2000 कमाएं। यूट्यूब वीडियो लाइक करें। रजिस्ट्रेशन फीस 300 भेजें।"
+  },
+  {
+    "id": "u10",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "info_request",
+    "text": "प्रिय ग्राहक, आपका एटीएम कार्ड ब्लॉक कर दिया गया है। चालू करने के लिए 16 अंकों का कार्ड नंबर और सीवीवी भेजें।"
+  },
+  {
+    "id": "u11",
+    "lang": "english",
+    "expected": "scam",
+    "category": "loan",
+    "text": "Congratulations! Your loan of 5,00,000 is approved without documents. Pay processing fee of 2500: http://quick-loan-india.xyz"
+  },
+  {
+    "id": "u12",
+    "lang": "english",
+    "expected": "scam",
+    "category": "lottery",
+    "text": "You have won $1,000,000 cash prize in UK Lottery! Click http://claim-uk-lottery.top to pay processing fee and claim."
+  },
+  {
+    "id": "u13",
+    "lang": "english",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "Delhi Police Narcotics Bureau: A parcel sent to China in your name was seized with illegal drugs. You are placed in digital arrest. Call immediately."
+  },
+  {
+    "id": "u14",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "govt_scheme",
+    "text": "पीएम किसान योजना की 18वीं किस्त का पैसा खाते में पाने के लिए तुरंत यह सरकारी PM_Kisan_App.apk डाउनलोड करके इंस्टॉल करें।"
+  },
+  {
+    "id": "u15",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "bank_threat",
+    "text": "स्टेट बैंक अलर्ट: आपका खाता आज रात बंद हो जाएगा क्योंकि पैन कार्ड लिंक नहीं है। तुरंत http://sbi-pan-update.xyz पर पैन दर्ज करें।"
+  },
+  {
+    "id": "u16",
+    "lang": "english",
+    "expected": "scam",
+    "category": "upi_refund",
+    "text": "I mistakenly transferred Rs 15000 to your Google Pay. Please refund the wrong transfer immediately to 9876543210."
+  },
+  {
+    "id": "u17",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "lottery",
+    "text": "केबीसी लकी ड्रा: आपने जीता ₹50 लाख का नकद इनाम! अपना इनाम पाने के लिए 2500 रुपये सरकारी टैक्स जमा करें।"
+  },
+  {
+    "id": "u18",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your account 9876 has been debited by Rs 450 on 11-Oct at Supermarket. UPI Ref 38291823. Available balance: Rs 4,500."
+  },
+  {
+    "id": "u19",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "नमस्ते दादी, मैं शाम को घर आते समय आपकी दवाइयां और राशन लेते आऊंगा।"
+  },
+  {
+    "id": "u20",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Security Alert: Never share your NetBanking password or OTP with anyone including bank staff. State Bank of India will never ask for your confidential details."
+  },
+  {
+    "id": "u21",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "आपका बिजली का बिल माह सितंबर का ₹850 सफलतापूर्वक प्राप्त हुआ। धन्यवाद - यूपीपीसीएल (uppcl.org)"
+  },
+  {
+    "id": "u22",
+    "lang": "hinglish",
+    "expected": "suspicious",
+    "category": "sim_kyc",
+    "text": "Aapka Airtel sim verification pending hai, kripya apni najdiki Airtel store par visit karein."
+  },
+  {
+    "id": "u23",
+    "lang": "english",
+    "expected": "suspicious",
+    "category": "loan",
+    "text": "Pre-approved personal loan up to 3 Lakhs available. Low interest rates. Inquire at 9876543210 for details."
+  },
+  {
+    "id": "u24",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "प्रधानमंत्री आवास योजना की लाभार्थी सूची देखने के लिए आधिकारिक पोर्टल pmaymis.gov.in पर जाएं।"
+  }
+]
