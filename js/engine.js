@@ -21,11 +21,13 @@
     s = s.replace(/[​-‍﻿]/g, "");                       // zero-width characters
     s = s.replace(/़/g, "");                                      // Devanagari nukta
     s = s.replace(/ँ/g, "ं");                                // chandrabindu -> anusvara
-    s = s.replace(/[०-९]/g, function (d) { return String(d.charCodeAt(0) - 0x0966); });
+    s = s.replace(/[०-९]/g, function (d) { return String(d.charCodeAt(0) - 0x0966); }); // Devanagari numerals
+    s = s.replace(/[০-৯]/g, function (d) { return String(d.charCodeAt(0) - 0x09E6); }); // Bengali numerals
     s = s.replace(/(?<=\d),(?=\d)/g, "");                         // 10,000 -> 10000
     s = s.replace(/['’`]/g, "");                                  // don't -> dont
     s = s.replace(/\b(?:[a-z]\.){2,}[a-z]?\b/g, function (m) { return m.replace(/\./g, ""); }); // o.t.p -> otp
     s = s.replace(/\b([a-z0-9])[.\-_/]([a-z0-9])[.\-_/]([a-z0-9])\b/gi, "$1$2$3"); // o-t-p, k-y-c -> otp, kyc
+    s = s.replace(/([a-zऀ-ॿ০-৯])/g, "$1");
     s = s.replace(/([a-zऀ-ॿ])\1{2,}/g, "$1$1");              // bhejooo -> bhejoo
     // Anti-evasion leetspeak deobfuscation for common scam keywords
     s = s.replace(/\b[0o]tp\b/gi, "otp")
@@ -130,7 +132,125 @@
     return best;
   }
 
-  // ---------- 4. analyse ----------
+  // ---------- 4. warning signs and evidence extraction ----------
+  function extractWarningSigns(raw, tokens, cats, signals, G, W, verdict) {
+    if (verdict === "low_risk") {
+      return [];
+    }
+    var clues = [];
+    var norm = raw.toLowerCase();
+
+    // Clue 1: Urgency or threats of account closure / disconnection / arrest
+    var hasUrgencySignal = signals.some(function (s) { return s.id === "urgency"; });
+    var threatCats = ["sim_kyc", "bank_threat", "electricity", "authority_threat"];
+    var hasThreatCat = threatCats.some(function (c) { return cats[c] && cats[c].score >= W.medium; });
+    if (hasUrgencySignal || hasThreatCat) {
+      var evidenceQuotes = [];
+      threatCats.forEach(function (c) {
+        if (cats[c] && cats[c].hits) {
+          cats[c].hits.forEach(function (h) {
+            if (h.level === "strong" || h.level === "medium") evidenceQuotes.push(h.phrase);
+          });
+        }
+      });
+      G.urgency.forEach(function (w) {
+        if (evidenceQuotes.length < 3 && norm.indexOf(w.toLowerCase()) !== -1) {
+          evidenceQuotes.push(w);
+        }
+      });
+      var quoteStr = evidenceQuotes.slice(0, 2).map(function (q) { return '“' + q + '”'; }).join(", ");
+      clues.push({
+        id: "urgency_threat",
+        labelEn: "Creates artificial urgency or threatens account closure / service cut / legal action",
+        labelHi: "जल्दबाज़ी बनाता है या खाता/बिजली/सिम बंद होने या कानूनी कार्रवाई का डर दिखाता है",
+        labelBn: "তাড়াহুড়ো সৃষ্টি করে বা অ্যাকাউন্ট/বিদ্যুৎ/সিম বন্ধ বা আইনি ব্যবস্থার ভয় দেখায়",
+        evidence: quoteStr || "Artificial urgency / threat detected in message"
+      });
+    }
+
+    // Clue 2: Requests an OTP, PIN, password, or payment
+    var credCats = ["otp_request", "info_request", "upi_refund"];
+    var hasCredCat = credCats.some(function (c) { return cats[c] && cats[c].score >= W.medium; });
+    var credMatch = raw.match(/\b(?:otp|upi\s*pin|atm\s*pin|cvv|password|ओटीपी|पिन|পাসওয়ার্ড|ওটিপি)\b/i);
+    if (hasCredCat || credMatch) {
+      var evidenceCred = [];
+      credCats.forEach(function (c) {
+        if (cats[c] && cats[c].hits) {
+          cats[c].hits.forEach(function (h) {
+            if (h.level === "strong" || h.level === "medium") evidenceCred.push(h.phrase);
+          });
+        }
+      });
+      if (credMatch && evidenceCred.indexOf(credMatch[0]) === -1) {
+        evidenceCred.push(credMatch[0]);
+      }
+      var quoteStr2 = evidenceCred.slice(0, 2).map(function (q) { return '“' + q + '”'; }).join(", ");
+      clues.push({
+        id: "credential_payment",
+        labelEn: "Requests confidential OTP, PIN, password, or payment / money transfer",
+        labelHi: "गोपनीय ओटीपी, यूपीआई पिन, पासवर्ड या पैसे ट्रांसफर करने की मांग करता है",
+        labelBn: "গোপনীয় ওটিপি, ইউপিআই পিন, পাসওয়ার্ড বা টাকা ট্রান্সফারের দাবি করে",
+        evidence: quoteStr2 || "Confidential credential / money request detected"
+      });
+    }
+
+    // Clue 3: Uses an unfamiliar link or unexpected reward
+    var hasLinkSignal = signals.some(function (s) { return s.id === "link" || s.id === "shortener" || s.id === "lookalike"; });
+    var rewardCats = ["lottery", "govt_scheme"];
+    var hasRewardCat = rewardCats.some(function (c) { return cats[c] && cats[c].score >= W.medium; });
+    if (hasLinkSignal || hasRewardCat) {
+      var evidenceLink = [];
+      URL_RE.lastIndex = 0;
+      var urls = raw.match(URL_RE);
+      if (urls && urls.length) {
+        urls.forEach(function (u) { evidenceLink.push(u); });
+      }
+      rewardCats.forEach(function (c) {
+        if (cats[c] && cats[c].hits) {
+          cats[c].hits.forEach(function (h) {
+            if (h.level === "strong" || h.level === "medium") evidenceLink.push(h.phrase);
+          });
+        }
+      });
+      var quoteStr3 = evidenceLink.slice(0, 2).map(function (q) { return '“' + q + '”'; }).join(", ");
+      clues.push({
+        id: "unfamiliar_link_reward",
+        labelEn: "Uses an unfamiliar web link or offers an unexpected reward / prize",
+        labelHi: "अपरिचित वेब लिंक का उपयोग करता है या अनपेक्षित लॉटरी/इनाम का लालच देता है",
+        labelBn: "অপরিচিত ওয়েব লিঙ্ক ব্যবহার করে বা অপ্রত্যাশিত পুরস্কার/লটারির প্রলোভন দেয়",
+        evidence: quoteStr3 || "Unverified link or prize incentive detected"
+      });
+    }
+
+    // Clue 4: Asks recipient to install an app or take an unusual action
+    var hasApkSignal = signals.some(function (s) { return s.id === "apk"; });
+    var hasPhoneSignal = signals.some(function (s) { return s.id === "phone"; });
+    var hasActionSignal = signals.some(function (s) { return s.id === "action"; });
+    if (hasApkSignal || hasPhoneSignal || hasActionSignal) {
+      var evidenceAction = [];
+      var apkMatch = raw.match(/\b[\w.-]+\.apk\b|\bapk\b/i);
+      if (apkMatch) evidenceAction.push(apkMatch[0]);
+      var phoneMatch = raw.match(PHONE_RE);
+      if (phoneMatch) evidenceAction.push(phoneMatch[0].trim());
+      G.action.forEach(function (a) {
+        if (evidenceAction.length < 2 && norm.indexOf(a.toLowerCase()) !== -1) {
+          evidenceAction.push(a);
+        }
+      });
+      var quoteStr4 = evidenceAction.slice(0, 2).map(function (q) { return '“' + q + '”'; }).join(", ");
+      clues.push({
+        id: "app_or_unusual_action",
+        labelEn: "Asks to install an app (.apk) or take an unusual action (call personal number / WhatsApp)",
+        labelHi: "ऐप (.apk) इंस्टॉल करने या असामान्य कदम उठाने (निजी नंबर/व्हाट्सएप पर संपर्क) को कहता है",
+        labelBn: "অ্যাপ (.apk) ইনস্টল করতে বা অস্বাভাবিক পদক্ষেপ নিতে (ব্যক্তিগত নম্বর/হোয়াটসঅ্যাপে যোগাযোগ) বলে",
+        evidence: quoteStr4 || "Prompt to install app or contact unverified number detected"
+      });
+    }
+
+    return clues;
+  }
+
+  // ---------- 5. analyse ----------
   function anyPhrase(tokens, list) {
     return list.some(function (p) { return findPhrase(tokens, phraseTokens(p), true, MAX_GAP); });
   }
@@ -143,10 +263,26 @@
         score: 0,
         headlineHi: "कृपया जाँचने के लिए मैसेज लिखें या बोलें।",
         headlineEn: "Please enter or paste a message to analyze.",
+        headlineBn: "যাচাই করার জন্য দয়া করে একটি মেসেজ লিখুন বা পেস্ট করুন।",
         stepsHi: [],
         stepsEn: [],
+        stepsBn: [],
         reasonsHi: [],
-        reasonsEn: []
+        reasonsEn: [],
+        reasonsBn: [],
+        warningSigns: [],
+        hasEvidence: false,
+        evidenceNoteEn: "",
+        evidenceNoteHi: "",
+        evidenceNoteBn: "",
+        avoidEn: "", avoidHi: "", avoidBn: "",
+        verifyEn: "", verifyHi: "", verifyBn: "",
+        reportEn: "", reportHi: "", reportBn: "",
+        nextSteps: {
+          avoidEn: "", avoidHi: "", avoidBn: "",
+          verifyEn: "", verifyHi: "", verifyBn: "",
+          reportEn: "", reportHi: "", reportBn: ""
+        }
       };
     }
     var tokens = maskSafe(tokenize(raw));
@@ -191,58 +327,105 @@
 
     var verdict = total >= T.scam ? "scam" : (total >= T.suspicious ? "suspicious" : "low_risk");
     var V = RULES.verdicts[verdict];
+    var info = verdict === "low_risk" ? null : (topId ? RULES.categories[topId] : RULES.genericRisk);
+
+    // (d) warning signs with concrete evidence
+    var warningSigns = extractWarningSigns(raw, tokens, cats, signals, G, W, verdict);
+    var hasEvidence = warningSigns.length > 0;
 
     var result = {
       verdict: verdict,
       colour: V.colour,
       score: Math.round(total * 10) / 10,
-      category: null,
-      categoryNameHi: null,
-      categoryNameEn: null,
+      category: topId || (verdict !== "low_risk" ? "generic_risk" : null),
+      categoryNameHi: info ? info.nameHi : null,
+      categoryNameEn: info ? info.nameEn : null,
+      categoryNameBn: info ? (info.nameBn || info.nameEn) : null,
       headlineHi: V.headlineHi,
       headlineEn: V.headlineEn,
+      headlineBn: V.headlineBn || V.headlineEn,
       explanationHi: "",
       explanationEn: "",
+      explanationBn: "",
       stepsHi: [],
       stepsEn: [],
+      stepsBn: [],
       reasonsHi: [],
       reasonsEn: [],
-      helplinesHi: "",
-      helplinesEn: "",
+      reasonsBn: [],
+      helplinesHi: RULES.helplinesHi,
+      helplinesEn: RULES.helplinesEn,
+      helplinesBn: RULES.helplinesBn || RULES.helplinesEn,
+      warningSigns: warningSigns,
+      hasEvidence: hasEvidence,
+      evidenceNoteEn: hasEvidence
+        ? "Warning signs with evidence from your message:"
+        : "Not enough evidence of scam tactics. The message does not create panic, ask for credentials, or use untrusted links.",
+      evidenceNoteHi: hasEvidence
+        ? "संदेश में मिले प्रत्यक्ष प्रमाणों के साथ चेतावनी संकेत:"
+        : "धोखाधड़ी के पर्याप्त प्रमाण नहीं मिले। इस मैसेज में कोई हड़बड़ी, गोपनीय जानकारी की मांग या संदिग्ध लिंक नहीं है।",
+      evidenceNoteBn: hasEvidence
+        ? "মেসেজে পাওয়া প্রত্যক্ষ প্রমাণসহ সতর্কবার্তা লক্ষণ:"
+        : "প্রতারণার কৌশলগত প্রমাণের অভাব রয়েছে। এই বার্তায় কোনো কৃত্রিম তাড়াহুড়ো, ওটিপি/পিন চাওয়া বা অচেনা লিঙ্ক নেই।",
+      avoidEn: (info && info.avoidEn) || V.avoidEn || "",
+      avoidHi: (info && info.avoidHi) || V.avoidHi || "",
+      avoidBn: (info && info.avoidBn) || V.avoidBn || "",
+      verifyEn: (info && info.verifyEn) || V.verifyEn || "",
+      verifyHi: (info && info.verifyHi) || V.verifyHi || "",
+      verifyBn: (info && info.verifyBn) || V.verifyBn || "",
+      reportEn: (info && info.reportEn) || V.reportEn || "",
+      reportHi: (info && info.reportHi) || V.reportHi || "",
+      reportBn: (info && info.reportBn) || V.reportBn || "",
       spokenHi: "",
       spokenEn: "",
+      spokenBn: "",
       debug: { categories: cats, signals: signals }
+    };
+
+    result.nextSteps = {
+      avoidEn: result.avoidEn,
+      avoidHi: result.avoidHi,
+      avoidBn: result.avoidBn,
+      verifyEn: result.verifyEn,
+      verifyHi: result.verifyHi,
+      verifyBn: result.verifyBn,
+      reportEn: result.reportEn,
+      reportHi: result.reportHi,
+      reportBn: result.reportBn
     };
 
     if (verdict === "low_risk") {
       result.explanationHi = V.noteHi;
       result.explanationEn = V.noteEn;
+      result.explanationBn = V.noteBn || V.noteEn;
       result.stepsHi = V.stepsHi.slice();
       result.stepsEn = V.stepsEn.slice();
+      result.stepsBn = (V.stepsBn || V.stepsEn).slice();
     } else {
-      var info = topId ? RULES.categories[topId] : RULES.genericRisk;
-      result.category = topId || "generic_risk";
-      result.categoryNameHi = info.nameHi;
-      result.categoryNameEn = info.nameEn;
       result.explanationHi = info.explainHi;
       result.explanationEn = info.explainEn;
+      result.explanationBn = info.explainBn || info.explainEn;
       result.stepsHi = info.stepsHi.slice();
       result.stepsEn = info.stepsEn.slice();
-      result.helplinesHi = RULES.helplinesHi;
-      result.helplinesEn = RULES.helplinesEn;
+      result.stepsBn = (info.stepsBn || info.stepsEn).slice();
+
       Object.keys(cats).forEach(function (id) {
         if (cats[id].score >= W.medium) {
           result.reasonsHi.push(RULES.categories[id].reasonHi);
           result.reasonsEn.push(RULES.categories[id].reasonEn);
+          result.reasonsBn.push(RULES.categories[id].reasonBn || RULES.categories[id].reasonEn);
         }
       });
       signals.forEach(function (s) {
         result.reasonsHi.push(G.labelsHi[s.id]);
         result.reasonsEn.push(G.labelsEn[s.id]);
+        result.reasonsBn.push((G.labelsBn && G.labelsBn[s.id]) || G.labelsEn[s.id]);
       });
     }
+
     result.spokenHi = [result.headlineHi, result.explanationHi].concat(result.stepsHi.slice(0, 2)).join(" ");
     result.spokenEn = [result.headlineEn, result.explanationEn].concat(result.stepsEn.slice(0, 2)).join(" ");
+    result.spokenBn = [result.headlineBn, result.explanationBn].concat(result.stepsBn.slice(0, 2)).join(" ");
     return result;
   }
 

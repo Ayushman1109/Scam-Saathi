@@ -328,5 +328,86 @@
     "lang": "english",
     "expected": "low_risk",
     "text": "Telecom Advisory: TRAI does not disconnect any mobile connection. If you receive suspicious calls regarding SIM disconnection, verify with your service provider."
+  },
+  {
+    "id": "u51",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "electricity",
+    "text": "প্রিয় গ্রাহক, আপনার বিদ্যুৎ বিল বাকি থাকার কারণে আজ রাতে বিদ্যুৎ সংযোগ বিচ্ছিন্ন করা হবে। অবিলম্বে বিদ্যুৎ অফিসারের সাথে যোগাযোগ করুন ৯৮৭৬৫৪৩২১০"
+  },
+  {
+    "id": "u52",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": ["sim_kyc", "bank_threat"],
+    "text": "আপনার এসবিআই অ্যাকাউন্ট সাময়িকভাবে স্থগিত করা হয়েছে। অবিলম্বে প্যান কার্ড আপডেট করতে লিঙ্কে ক্লিক করুন http://sbi-kyc-verify.club/login"
+  },
+  {
+    "id": "u53",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "আমি সিবিআই অফিসার বলছি। আপনার নামে কুরিয়ার পার্সেল ধরা পড়েছে যাতে মাদকদ্রব্য ও ড্রাগস রয়েছে। আপনার বিরুদ্ধে ডিজিটাল অ্যারেস্ট পরোয়ানা জারি হয়েছে।"
+  },
+  {
+    "id": "u54",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "job_offer",
+    "text": "ঘরে বসে আয় করুন প্রতিদিন ২০০০ থেকে ৫০০০ টাকা। শুধুমাত্র ইউটিউব ভিডিও লাইক করে সহজ কাজ। অবিলম্বে হোয়াটসঅ্যাপে যোগাযোগ করুন: ৯৮১১২৩৪৫৬৭"
+  },
+  {
+    "id": "u55",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": ["upi_refund", "info_request"],
+    "text": "টাকা পাওয়ার জন্য পিন দিন। আপনার অ্যাকাউন্টে টাকা জমা পেতে এখনই ইউপিআই পিন দিন ও রিকোয়েস্ট অ্যাকসেপ্ট করুন।"
+  },
+  {
+    "id": "u56",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "lottery",
+    "text": "অভিনন্দন! আপনি কেবিসি লটারিতে ২৫ লাখ টাকা জিতেছেন। পুরস্কারের টাকা পেতে আজই যোগাযোগ করুন ৯৮৪৫১২২৩৩৩ নম্বরে।"
+  },
+  {
+    "id": "u57",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "loan",
+    "text": "কোনো কাগজপত্র ছাড়া লোন ₹২,০০,০০০ মঞ্জুর হয়েছে। অবিলম্বে প্রসেসিং ফি জমা দিয়ে লোন নিন: http://quick-loan.xyz/apply"
+  },
+  {
+    "id": "u58",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "sim_kyc",
+    "text": "জরুরি বিজ্ঞপ্তি: আপনার সিম কার্ড বন্ধ হয়ে যাবে। সিম চালু রাখতে লিঙ্কে গিয়ে কেওয়াইসি ভেরিফাই করুন http://airtel-kyc.net/update"
+  },
+  {
+    "id": "u59",
+    "lang": "bengali",
+    "expected": "low_risk",
+    "text": "WBSEDCL: উপভোক্তা আইডি ১০২৯৩৮৪৭৫-এর জন্য ৮৫০ টাকা বিদ্যুৎ বিল জমা হয়েছে। ধন্যবাদ। (wbsedcl.in)"
+  },
+  {
+    "id": "u60",
+    "lang": "bengali",
+    "expected": "low_risk",
+    "text": "আপনার ডেলিভারি ওটিপি হল ৪৩৯২। পণ্যটি পৌঁছানোর পর এটি ডেলিভারি বয়কে দিন। কাউকে ওটিপি বলবেন না। -ফ্লিপকার্ট (flipkart.com)"
+  },
+  {
+    "id": "u61",
+    "lang": "bengali",
+    "expected": "low_risk",
+    "text": "আপনার ব্যাংক অ্যাকাউন্ট থেকে ₹১,২০০ ডেবিট হয়েছে এটিএম উত্তোলনের মাধ্যমে। ব্যাংক কখনো ওটিপি চায় না। -এসবিআই"
+  },
+  {
+    "id": "u62",
+    "lang": "bengali",
+    "expected": "low_risk",
+    "text": "আপনার ব্যাংক অ্যাকাউন্টে এলপিজি গ্যাস সিলিন্ডারের ভর্তুকি ₹৩০০ সফলভাবে জমা হয়েছে। -ইন্ডিয়ান অয়েল (iocl.com)"
   }
 ]
+

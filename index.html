@@ -9,10 +9,10 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Google Fonts: Noto Sans Devanagari + Outfit -->
+  <!-- Google Fonts: Noto Sans Bengali + Noto Sans Devanagari + Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -49,7 +49,7 @@
     }
 
     body {
-      font-family: 'Noto Sans Devanagari', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Noto Sans Bengali', 'Noto Sans Devanagari', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background: radial-gradient(circle at 50% 0%, #1e293b 0%, var(--bg-main) 70%);
       color: var(--text-main);
       min-height: 100vh;
@@ -100,7 +100,7 @@
       box-shadow: 0 0 8px #10b981;
     }
 
-    /* Segmented Sliding Language Toggle */
+    /* Segmented Sliding Language Toggle (3-Way: Hindi | English | Bengali) */
     .lang-switch-wrapper {
       display: flex;
       align-items: center;
@@ -124,11 +124,11 @@
       background: transparent;
       border: none;
       color: #94a3b8;
-      padding: 6px 14px;
-      min-width: 72px;
+      padding: 6px 12px;
+      min-width: 58px;
       text-align: center;
       border-radius: 999px;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: color 0.2s ease;
@@ -148,7 +148,7 @@
       top: 3px;
       left: 3px;
       bottom: 3px;
-      width: calc(50% - 3px);
+      width: calc((100% - 6px) / 3);
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       border-radius: 999px;
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -157,8 +157,16 @@
       pointer-events: none;
     }
 
+    .lang-switch[data-active="hi"] .lang-slider {
+      transform: translateX(0%);
+    }
+
     .lang-switch[data-active="en"] .lang-slider {
       transform: translateX(100%);
+    }
+
+    .lang-switch[data-active="bn"] .lang-slider {
+      transform: translateX(200%);
     }
 
     /* Top Header Bar */
@@ -570,17 +578,17 @@
       margin-bottom: 20px;
     }
 
-    /* Reasons List */
-    .reasons-box {
-      background: rgba(0, 0, 0, 0.25);
+    /* Warning Signs Detected (Clues with Direct Evidence) */
+    .warning-signs-box {
+      background: rgba(0, 0, 0, 0.32);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 16px;
       margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .box-title {
-      font-size: 16px;
+      font-size: 16.5px;
       font-weight: 700;
       margin-bottom: 8px;
       display: flex;
@@ -589,31 +597,81 @@
       color: #ffffff;
     }
 
-    .reasons-list {
+    .warning-signs-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .reasons-list li {
-      font-size: 16px;
-      color: #cbd5e1;
+    .clue-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .clue-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #f8fafc;
+      line-height: 1.4;
+    }
+
+    .clue-evidence {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
+      font-size: 13.5px;
+    }
+
+    .evidence-tag {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .clue-evidence code {
+      background: rgba(0, 0, 0, 0.45);
+      color: #fed7aa;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 13.5px;
+      word-break: break-word;
+    }
+
+    .no-evidence-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      color: #a7f3d0;
+      font-size: 15px;
       line-height: 1.5;
     }
 
-    .reasons-list li::before {
-      content: "•";
-      color: var(--saffron);
-      font-size: 22px;
-      line-height: 16px;
+    .no-evidence-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* Steps Box */
-    .steps-box {
+    /* Safe Next Steps Answering 3 Distinct Questions */
+    .next-steps-container {
       background: rgba(0, 0, 0, 0.25);
       border-radius: var(--radius-md);
       padding: 16px;
@@ -621,35 +679,63 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .steps-list {
-      list-style: none;
+    .three-questions-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 10px;
     }
 
-    .steps-list li {
-      font-size: 16.5px;
-      color: #f1f5f9;
+    .step-card {
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.5;
+      flex-direction: column;
+      gap: 6px;
+      border: 1px solid transparent;
     }
 
-    .step-num {
-      background: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      width: 26px;
-      height: 26px;
-      min-width: 26px;
-      border-radius: 50%;
-      display: flex;
+    .avoid-card {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .verify-card {
+      background: rgba(59, 130, 246, 0.08);
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+
+    .report-card {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    .step-q-badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
       font-size: 14px;
       font-weight: 700;
-      margin-top: 1px;
+      letter-spacing: 0.2px;
+    }
+
+    .avoid-badge {
+      color: #f87171;
+    }
+
+    .verify-badge {
+      color: #60a5fa;
+    }
+
+    .report-badge {
+      color: #fbbf24;
+    }
+
+    .step-q-body {
+      font-size: 15px;
+      color: #f1f5f9;
+      line-height: 1.55;
+      padding-left: 2px;
     }
 
     /* Helpline 1930 Emergency Action */
@@ -968,41 +1054,50 @@
         margin-bottom: 14px;
       }
 
-      .reasons-box, .steps-box {
+      .warning-signs-box, .next-steps-container {
         padding: 12px;
         margin-bottom: 12px;
         border-radius: 10px;
       }
 
       .box-title {
-        font-size: 14px;
+        font-size: 14.5px;
         margin-bottom: 6px;
       }
 
-      .reasons-list {
-        gap: 6px;
+      .warning-signs-list {
+        gap: 8px;
       }
 
-      .reasons-list li {
+      .clue-item {
+        padding: 10px 12px;
+        gap: 4px;
+      }
+
+      .clue-title {
+        font-size: 14px;
+      }
+
+      .clue-evidence {
+        font-size: 12.5px;
+      }
+
+      .three-questions-grid {
+        gap: 8px;
+      }
+
+      .step-card {
+        padding: 10px 12px;
+        gap: 4px;
+      }
+
+      .step-q-badge {
+        font-size: 13px;
+      }
+
+      .step-q-body {
         font-size: 13.5px;
         line-height: 1.45;
-      }
-
-      .steps-list {
-        gap: 8px;
-      }
-
-      .steps-list li {
-        font-size: 14px;
-        gap: 8px;
-        line-height: 1.45;
-      }
-
-      .step-num {
-        width: 22px;
-        height: 22px;
-        min-width: 22px;
-        font-size: 12px;
       }
 
       /* Helpline Box */
@@ -1084,6 +1179,9 @@
             </button>
             <button type="button" class="lang-btn" id="lang-btn-en" data-lang="en" aria-pressed="false">
               English
+            </button>
+            <button type="button" class="lang-btn" id="lang-btn-bn" data-lang="bn" aria-pressed="false">
+              বাংলা
             </button>
             <span class="lang-slider" aria-hidden="true"></span>
           </div>
@@ -1203,24 +1301,51 @@
           असली बैंक, सरकारी विभाग या कंपनी आपसे कभी OTP, पिन या पासवर्ड नहीं मांगती।
         </p>
 
-        <!-- Red Flags -->
-        <div class="reasons-box" id="reasons-box">
-          <div class="box-title" id="reasons-box-title">
-            <span>🚩</span> <span id="reasons-title-text">यह मैसेज क्यों संदिग्ध लगा?</span>
+        <!-- Warning Signs Detected (Specific clues with evidence) -->
+        <div class="warning-signs-box" id="warning-signs-box">
+          <div class="box-title" id="warning-signs-box-title">
+            <span>🚩</span> <span id="warning-signs-title-text">संदेश में मिले खतरे के संकेत (सबूत के साथ):</span>
           </div>
-          <ul class="reasons-list" id="reasons-list">
+          <ul class="warning-signs-list" id="warning-signs-list">
             <!-- Populated via JS -->
           </ul>
         </div>
 
-        <!-- Next Steps -->
-        <div class="steps-box" id="steps-box">
-          <div class="box-title" id="steps-box-title">
-            <span>✅</span> <span id="steps-title-text">आपको तुरंत क्या करना चाहिए?</span>
+        <div class="no-evidence-box" id="no-evidence-box" style="display: none;">
+          <div class="no-evidence-content">
+            <span class="no-evidence-icon" style="font-size: 20px;">ℹ️</span>
+            <span id="no-evidence-text">धोखाधड़ी के पर्याप्त प्रमाण नहीं मिले। इस संदेश में कोई हड़बड़ी, गोपनीय जानकारी की मांग या संदिग्ध लिंक नहीं है।</span>
           </div>
-          <ul class="steps-list" id="steps-list">
-            <!-- Populated via JS -->
-          </ul>
+        </div>
+
+        <!-- Safe Next Steps (Answering the 3 exact questions) -->
+        <div class="next-steps-container" id="next-steps-container">
+          <div class="box-title" id="next-steps-box-title">
+            <span>🛡️</span> <span id="next-steps-title-text">सुरक्षित कदम (आपको क्या करना चाहिए):</span>
+          </div>
+          <div class="three-questions-grid">
+            <div class="step-card avoid-card">
+              <div class="step-q-badge avoid-badge">
+                <span class="step-q-icon">🛑</span>
+                <span class="step-q-title" id="avoid-step-title">1. अभी क्या न करें?</span>
+              </div>
+              <p class="step-q-body" id="avoid-step-text"></p>
+            </div>
+            <div class="step-card verify-card">
+              <div class="step-q-badge verify-badge">
+                <span class="step-q-icon">🔍</span>
+                <span class="step-q-title" id="verify-step-title">2. खुद कहाँ जाँचें?</span>
+              </div>
+              <p class="step-q-body" id="verify-step-text"></p>
+            </div>
+            <div class="step-card report-card">
+              <div class="step-q-badge report-badge">
+                <span class="step-q-icon">🚨</span>
+                <span class="step-q-title" id="report-step-title">3. कहाँ रिपोर्ट करें या मदद लें?</span>
+              </div>
+              <p class="step-q-body" id="report-step-text"></p>
+            </div>
+          </div>
         </div>
 
         <!-- 1930 Emergency Helpline Box (shown for scam/suspicious) -->
@@ -1277,7 +1402,7 @@
       });
     }
 
-    // Bilingual Dictionary
+    // Trilingual Dictionary (Hindi, English, Bengali)
     const I18N = {
       hi: {
         page_title: "स्कैम साथी | Scam Saathi - संदिग्ध मैसेज की सुरक्षित जाँच",
@@ -1291,12 +1416,17 @@
         image_btn: "स्क्रीनशॉट",
         paste_btn: "पेस्ट करें",
         clear_btn: "साफ़",
-        placeholder: "यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश या इंग्लिश)",
+        placeholder: "यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश, इंग्लिश या बांग्ला)",
         tip: "सुझाव: आप स्क्रीनशॉट अपलोड कर सकते हैं, ड्रैग कर सकते हैं या बोलकर टाइप कर सकते हैं।",
         check_btn: "मैसेज की जाँच करें (Check)",
         sample_title: "⚡ तुरंत टेस्ट करने के लिए उदाहरण चुनें:",
-        reasons_title: "यह मैसेज क्यों संदिग्ध लगा?",
-        steps_title: "आपको तुरंत क्या करना चाहिए?",
+        warning_signs_title: "संदेश में मिले खतरे के संकेत (सबूत के साथ):",
+        no_evidence_title: "धोखाधड़ी के पर्याप्त प्रमाण नहीं मिले",
+        avoid_step_title: "1. अभी क्या न करें?",
+        verify_step_title: "2. खुद कहाँ जाँचें?",
+        report_step_title: "3. कहाँ रिपोर्ट करें या मदद लें?",
+        next_steps_title: "सुरक्षित कदम (आपको क्या करना चाहिए):",
+        evidence_matched_label: "मैसेज में मिला सबूत:",
         helpline_title: "🚨 अगर आपने जानकारी या पैसे दे दिए हैं, तो तुरंत मदद लें:",
         call_1930_btn: "📞 1930 पर तुरंत कॉल करें (फ्री हेल्पलाइन)",
         privacy_title: "गोपनीयता की गारंटी:",
@@ -1363,12 +1493,17 @@
         image_btn: "Screenshot",
         paste_btn: "Paste",
         clear_btn: "Clear",
-        placeholder: "Paste any suspicious SMS, WhatsApp message, or link here... (English, Hindi, or Hinglish)",
+        placeholder: "Paste any suspicious SMS, WhatsApp message, or link here... (English, Hindi, Bengali, or Hinglish)",
         tip: "Tip: You can upload screenshots, drag-and-drop, or use your microphone for voice typing.",
         check_btn: "Check Message Safety",
         sample_title: "⚡ Tap a real-world example to test instantly:",
-        reasons_title: "Why this looks suspicious (Red Flags):",
-        steps_title: "What you should do right now:",
+        warning_signs_title: "Warning Signs Detected (Clues with Evidence):",
+        no_evidence_title: "Insufficient Evidence of Scam Tactics",
+        avoid_step_title: "1. What should I avoid doing right now?",
+        verify_step_title: "2. What should I verify independently?",
+        report_step_title: "3. Where can I report it or seek help?",
+        next_steps_title: "Safe, Specific Next Steps:",
+        evidence_matched_label: "Evidence in message:",
         helpline_title: "🚨 If you shared info or sent money, get immediate help:",
         call_1930_btn: "📞 Call 1930 Cyber Helpline (Toll-Free)",
         privacy_title: "Privacy Guarantee:",
@@ -1422,6 +1557,83 @@
             text: "Rs 500 credited to your a/c XX1234 on 11-Oct. Avl Bal Rs 12,340. Never share your OTP with anyone. -SBI"
           }
         }
+      },
+      bn: {
+        page_title: "স্ক্যাম সাথী | Scam Saathi - সন্দেহজনক বার্তার নিরাপদ যাচাই",
+        meta_desc: "মোবাইলে আসা সন্দেহজনক SMS, WhatsApp বার্তা বা লিঙ্কের অন-ডিভাইস দ্রুত ও নিরাপদ যাচাই। নো এআই, নো ক্লাউড সার্ভার, ১০০% ব্যক্তিগত।",
+        offline_badge: "১০০% অফলাইন ও নিরাপদ",
+        badge: "Hack for Social Cause 2027 • ডিজিটাল নিরাপত্তা",
+        brand_title: "স্ক্যাম সাথী (Scam Saathi)",
+        brand_subtitle: "সন্দেহজনক মেসেজ, SMS ও লিঙ্কের তাৎক্ষণিক অন-ডিভাইস যাচাই",
+        trust_pill: "🛡️ ১০০% ব্যক্তিগত • কোনো ডেটা আপনার ফোনের বাইরে যায় না",
+        input_label: "সন্দেহজনক মেসেজ এখানে পেস্ট বা টাইপ করুন:",
+        image_btn: "স্ক্রিনশট",
+        paste_btn: "পেস্ট করুন",
+        clear_btn: "মুছুন",
+        placeholder: "এখানে সন্দেহজনক SMS, হোয়াটসঅ্যাপ মেসেজ বা লিঙ্ক পেস্ট করুন... (বাংলা, ইংরেজি বা হিন্দি)",
+        tip: "পরামর্শ: আপনি স্ক্রিনশট আপলোড করতে পারেন, টেনে এনে ফেলতে পারেন বা ভয়েস টাইপ করতে পারেন।",
+        check_btn: "মেসেজ যাচাই করুন (Check)",
+        sample_title: "⚡ দ্রুত পরীক্ষা করতে নমুনা নির্বাচন করুন:",
+        warning_signs_title: "বিপদের লক্ষণ ও পাওয়া প্রত্যক্ষ প্রমাণ:",
+        no_evidence_title: "প্রতারণার সুস্পষ্ট প্রমাণের অভাব",
+        avoid_step_title: "১. এখন কী করবেন না?",
+        verify_step_title: "২. নিজে কোথায় স্বাধীনভাবে যাচাই করবেন?",
+        report_step_title: "৩. কোথায় রিপোর্ট করবেন বা সাহায্য নেবেন?",
+        next_steps_title: "নিরাপদ পদক্ষেপ (আপনার এখন কী করণীয়):",
+        evidence_matched_label: "মেসেজে পাওয়া প্রমাণ:",
+        helpline_title: "🚨 টাকা খোয়া গেলে বা তথ্য দিয়ে থাকলে অবিলম্বে সাহায্য নিন:",
+        call_1930_btn: "📞 ১৯৩০ সাইবার হেল্পলাইনে কল করুন (টোল-ফ্রি)",
+        privacy_title: "গোপনীয়তার সম্পূর্ণ নিশ্চয়তা:",
+        privacy_desc: "আপনার মেসেজ ১০০% আপনার ডিভাইসের ভেতরেই বিশ্লেষণ করা হয়। কোনো এআই মডেল বা দূরবর্তী ক্লাউড সার্ভার নেই, ডেটা ফাঁসের কোনো ঝুঁকি নেই।",
+        footer_line1: "স্ক্যাম সাথী (Scam Saathi) • জাতীয় সাইবার নিরাপত্তা ও নাগরিক সচেতনতা উদ্যোগ",
+        footer_line2: "ওপেন সোর্স (MIT License) • জননিরাপত্তার স্বার্থে উৎসর্গীকৃত",
+        toast_pasted: "📋 মেসেজ পেস্ট হয়েছে",
+        toast_empty_clip: "ক্লিপবোর্ড খালি",
+        toast_paste_manual: "ইনপুট বক্সে সরাসরি পেস্ট করুন",
+        toast_cleared: "মেসেজ মোছা হয়েছে",
+        toast_empty_input: "যাচাই করার জন্য কোনো মেসেজ লিখুন বা পেস্ট করুন",
+        ocr_init: "অন-ডিভাইস OCR শুরু হচ্ছে...",
+        ocr_reading: "ছবি থেকে লেখা পড়া হচ্ছে:",
+        ocr_privacy: "১০০% অন-ডিভাইস স্ক্যান • কোনো ছবি ফোন থেকে বাইরে যায় না",
+        toast_ocr_success: "📷 ছবি থেকে লেখা উদ্ধার হয়েছে!",
+        toast_ocr_empty: "ছবিতে কোনো পাঠযোগ্য লেখা মেলেনি",
+        toast_ocr_err: "স্ক্যান ব্যর্থ হয়েছে। সরাসরি লেখা পেস্ট করুন।",
+        engine_not_loaded: "ডিটেকশন ইঞ্জিন লোড করা যায়নি। পেজ রিফ্রেশ করুন।",
+        score_label: "স্কোর",
+        badge_scam: "প্রতারণার উচ্চ ঝুঁকি!",
+        badge_suspicious: "সতর্কতা: সন্দেহজনক",
+        badge_safe: "সরাসরি কোনো বিপদের লক্ষণ মেলেনি",
+        badge_empty: "মেসেজ খালি",
+        samples: {
+          electricity: {
+            label: "⚡ বিদ্যুৎ সংযোগ কাটার হুমকি",
+            text: "বিদ্যুৎ বিভাগ: বকেয়া বিল না মেটানোর কারণে আজ রাতে ৯:৩০ টায় আপনার বিদ্যুৎ সংযোগ বিচ্ছিন্ন করা হবে। অবিলম্বে যোগাযোগ করুন ৯৮৭৬৫৪৩২১০ নম্বরে।"
+          },
+          bank: {
+            label: "🏦 ব্যাংক অ্যাকাউন্ট ব্লক / প্যান লিঙ্ক",
+            text: "প্রিয় গ্রাহক, আপনার এসবিআই অ্যাকাউন্ট আজ ব্লক করা হবে। প্যান কার্ড আপডেট করতে এখনই লিঙ্কে যান http://sbi-pan-update.xyz"
+          },
+          refund: {
+            label: "💸 ভুল করে টাকা ট্রান্সফারের ফাঁদ",
+            text: "টাকা ফেরত পাওয়ার জন্য ইউপিআই পিন দিন। আপনার অ্যাকাউন্টে ₹৫০০০ জমা পেতে এখনই পিন লিখুন ও রিকোয়েস্ট অ্যাকসেপ্ট করুন।"
+          },
+          job: {
+            label: "💼 ইউটিউব লাইক করে পার্ট-টাইম কাজ",
+            text: "ঘরে বসে আয় করুন প্রতিদিন ২০০০ থেকে ৫০০০ টাকা। শুধুমাত্র ইউটিউব ভিডিও লাইক করে সহজ কাজ। অবিলম্বে হোয়াটসঅ্যাপে যোগাযোগ করুন: ৯৮১১২৩৪৫৬৭"
+          },
+          lottery: {
+            label: "🎁 কেবিসি ২৫ লাখ টাকার লটারি",
+            text: "অভিনন্দন! আপনি কেবিসি লটারিতে ২৫ লাখ টাকা জিতেছেন। পুরস্কারের টাকা পেতে আজই যোগাযোগ করুন ৯৮৪৫১২২৩৩৩ নম্বরে।"
+          },
+          delivery: {
+            label: "📦 ফ্লিপকার্ট ওটিপি (নিরাপদ)",
+            text: "আপনার ডেলিভারি ওটিপি হল ৪৩৯২। পণ্যটি পৌঁছানোর পর এটি ডেলিভারি বয়কে দিন। কাউকে ওটিপি বলবেন না। -ফ্লিপকার্ট (flipkart.com)"
+          },
+          safe_bank: {
+            label: "💳 অফিশিয়াল ব্যাংক অ্যালার্ট (নিরাপদ)",
+            text: "আপনার ব্যাংক অ্যাকাউন্ট থেকে ₹১,২০০ ডেবিট হয়েছে এটিএম উত্তোলনের মাধ্যমে। ব্যাংক কখনো ওটিপি চায় না। -এসবিআই"
+          }
+        }
       }
     };
 
@@ -1435,6 +1647,7 @@
     const langSwitch = document.getElementById('lang-switch');
     const langBtnHi = document.getElementById('lang-btn-hi');
     const langBtnEn = document.getElementById('lang-btn-en');
+    const langBtnBn = document.getElementById('lang-btn-bn');
     const offlineBadgeText = document.getElementById('offline-badge-text');
     const badgeText = document.getElementById('badge-text');
     const brandTitleText = document.getElementById('brand-title-text');
@@ -1470,12 +1683,21 @@
     const resultScoreTag = document.getElementById('result-score-tag');
     const resultHeadline = document.getElementById('result-headline');
     const resultExplanation = document.getElementById('result-explanation');
-    const reasonsBox = document.getElementById('reasons-box');
-    const reasonsTitleText = document.getElementById('reasons-title-text');
-    const reasonsList = document.getElementById('reasons-list');
-    const stepsBox = document.getElementById('steps-box');
-    const stepsTitleText = document.getElementById('steps-title-text');
-    const stepsList = document.getElementById('steps-list');
+
+    const warningSignsBox = document.getElementById('warning-signs-box');
+    const warningSignsTitleText = document.getElementById('warning-signs-title-text');
+    const warningSignsList = document.getElementById('warning-signs-list');
+    const noEvidenceBox = document.getElementById('no-evidence-box');
+    const noEvidenceText = document.getElementById('no-evidence-text');
+
+    const nextStepsTitleText = document.getElementById('next-steps-title-text');
+    const avoidStepTitle = document.getElementById('avoid-step-title');
+    const avoidStepText = document.getElementById('avoid-step-text');
+    const verifyStepTitle = document.getElementById('verify-step-title');
+    const verifyStepText = document.getElementById('verify-step-text');
+    const reportStepTitle = document.getElementById('report-step-title');
+    const reportStepText = document.getElementById('report-step-text');
+
     const helplineBox = document.getElementById('helpline-box');
     const helplineTitle = document.getElementById('helpline-title');
     const call1930Btn = document.getElementById('call-1930-btn');
@@ -1501,7 +1723,7 @@
 
     // Set Language Switcher Function
     function setLanguage(lang) {
-      if (lang !== 'hi' && lang !== 'en') lang = 'hi';
+      if (lang !== 'hi' && lang !== 'en' && lang !== 'bn') lang = 'hi';
       const prevLang = currentLang;
       currentLang = lang;
       try {
@@ -1510,17 +1732,13 @@
 
       document.documentElement.lang = lang;
       langSwitch.setAttribute('data-active', lang);
-      if (lang === 'hi') {
-        langBtnHi.classList.add('active');
-        langBtnHi.setAttribute('aria-pressed', 'true');
-        langBtnEn.classList.remove('active');
-        langBtnEn.setAttribute('aria-pressed', 'false');
-      } else {
-        langBtnEn.classList.add('active');
-        langBtnEn.setAttribute('aria-pressed', 'true');
-        langBtnHi.classList.remove('active');
-        langBtnHi.setAttribute('aria-pressed', 'false');
-      }
+      
+      langBtnHi.classList.toggle('active', lang === 'hi');
+      langBtnHi.setAttribute('aria-pressed', lang === 'hi' ? 'true' : 'false');
+      langBtnEn.classList.toggle('active', lang === 'en');
+      langBtnEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+      langBtnBn.classList.toggle('active', lang === 'bn');
+      langBtnBn.setAttribute('aria-pressed', lang === 'bn' ? 'true' : 'false');
 
       const t = I18N[lang];
       pageTitle.textContent = t.page_title;
@@ -1541,8 +1759,12 @@
       sampleTitleText.textContent = t.sample_title;
       ocrStatusSub.textContent = t.ocr_privacy;
 
-      reasonsTitleText.textContent = t.reasons_title;
-      stepsTitleText.textContent = t.steps_title;
+      warningSignsTitleText.textContent = t.warning_signs_title;
+      nextStepsTitleText.textContent = t.next_steps_title;
+      avoidStepTitle.textContent = t.avoid_step_title;
+      verifyStepTitle.textContent = t.verify_step_title;
+      reportStepTitle.textContent = t.report_step_title;
+
       helplineTitle.textContent = t.helpline_title;
       call1930Btn.textContent = t.call_1930_btn;
 
@@ -1579,6 +1801,7 @@
     // Toggle button event listeners
     langBtnHi.addEventListener('click', () => setLanguage('hi'));
     langBtnEn.addEventListener('click', () => setLanguage('en'));
+    langBtnBn.addEventListener('click', () => setLanguage('bn'));
 
     // Lazy load Tesseract.js only on-demand
     let tesseractLoadingPromise = null;
@@ -1598,7 +1821,7 @@
       return tesseractLoadingPromise;
     }
 
-    // On-Device Image OCR Scanner
+    // On-Device Image OCR Scanner (English + Hindi + Bengali)
     async function processImage(file) {
       if (!file || !file.type.startsWith('image/')) return;
       const t = I18N[currentLang];
@@ -1612,7 +1835,7 @@
         await loadTesseract();
         ocrBarFill.style.width = '35%';
 
-        const ret = await Tesseract.recognize(file, 'eng+hin', {
+        const ret = await Tesseract.recognize(file, 'eng+hin+ben', {
           logger: m => {
             if (m.status === 'recognizing text' && m.progress != null) {
               const pct = Math.round(m.progress * 100);
@@ -1760,6 +1983,7 @@
 
     // Display Result with Language Selection Support
     function displayResult(res) {
+      const isBn = currentLang === 'bn';
       const isEn = currentLang === 'en';
       const t = I18N[currentLang];
 
@@ -1769,15 +1993,15 @@
       // Status Badge & Icons
       if (res.verdict === 'scam') {
         resultBadgeIcon.textContent = '🛑';
-        resultBadgeText.textContent = isEn 
-          ? (res.categoryNameEn || t.badge_scam)
-          : (res.categoryNameHi || t.badge_scam);
+        resultBadgeText.textContent = isBn
+          ? (res.categoryNameBn || t.badge_scam)
+          : (isEn ? (res.categoryNameEn || t.badge_scam) : (res.categoryNameHi || t.badge_scam));
         resultScoreTag.textContent = `(${t.score_label}: ${res.score})`;
       } else if (res.verdict === 'suspicious') {
         resultBadgeIcon.textContent = '⚠️';
-        resultBadgeText.textContent = isEn 
-          ? (res.categoryNameEn || t.badge_suspicious)
-          : (res.categoryNameHi || t.badge_suspicious);
+        resultBadgeText.textContent = isBn
+          ? (res.categoryNameBn || t.badge_suspicious)
+          : (isEn ? (res.categoryNameEn || t.badge_suspicious) : (res.categoryNameHi || t.badge_suspicious));
         resultScoreTag.textContent = `(${t.score_label}: ${res.score})`;
       } else if (res.verdict === 'low_risk') {
         resultBadgeIcon.textContent = '🛡️';
@@ -1789,47 +2013,48 @@
         resultScoreTag.textContent = '';
       }
 
-      resultHeadline.textContent = isEn 
-        ? (res.headlineEn || res.headlineHi || '') 
-        : (res.headlineHi || res.headlineEn || '');
+      resultHeadline.textContent = isBn
+        ? (res.headlineBn || res.headlineEn || '')
+        : (isEn ? (res.headlineEn || res.headlineHi || '') : (res.headlineHi || res.headlineEn || ''));
 
-      resultExplanation.textContent = isEn 
-        ? (res.explanationEn || res.explanationHi || '') 
-        : (res.explanationHi || res.explanationEn || '');
+      resultExplanation.textContent = isBn
+        ? (res.explanationBn || res.explanationEn || '')
+        : (isEn ? (res.explanationEn || res.explanationHi || '') : (res.explanationHi || res.explanationEn || ''));
 
-      // Red Flags / Reasons
-      const reasons = isEn 
-        ? (res.reasonsEn && res.reasonsEn.length ? res.reasonsEn : res.reasonsHi)
-        : (res.reasonsHi && res.reasonsHi.length ? res.reasonsHi : res.reasonsEn);
-
-      reasonsList.innerHTML = '';
-      if (reasons && reasons.length > 0) {
-        reasonsBox.style.display = 'block';
-        reasons.forEach(reason => {
+      // Warning Signs (Specific clues with evidence from the message)
+      if (res.hasEvidence && res.warningSigns && res.warningSigns.length > 0) {
+        warningSignsBox.style.display = 'block';
+        noEvidenceBox.style.display = 'none';
+        warningSignsList.innerHTML = '';
+        res.warningSigns.forEach(sign => {
           const li = document.createElement('li');
-          li.textContent = reason;
-          reasonsList.appendChild(li);
+          const title = isBn ? sign.labelBn : (isEn ? sign.labelEn : sign.labelHi);
+          li.innerHTML = `
+            <div class="clue-item">
+              <div class="clue-title">${escapeHtml(title)}</div>
+              <div class="clue-evidence">
+                <span class="evidence-tag">${escapeHtml(t.evidence_matched_label || 'Evidence:')}</span>
+                <code>${escapeHtml(sign.evidence)}</code>
+              </div>
+            </div>
+          `;
+          warningSignsList.appendChild(li);
         });
       } else {
-        reasonsBox.style.display = 'none';
+        warningSignsBox.style.display = 'none';
+        noEvidenceBox.style.display = 'block';
+        noEvidenceText.textContent = isBn
+          ? (res.evidenceNoteBn || t.no_evidence_title)
+          : (isEn ? (res.evidenceNoteEn || t.no_evidence_title) : (res.evidenceNoteHi || t.no_evidence_title));
       }
 
-      // Next Steps
-      const steps = isEn 
-        ? (res.stepsEn && res.stepsEn.length ? res.stepsEn : res.stepsHi)
-        : (res.stepsHi && res.stepsHi.length ? res.stepsHi : res.stepsEn);
-
-      stepsList.innerHTML = '';
-      if (steps && steps.length > 0) {
-        stepsBox.style.display = 'block';
-        steps.forEach((step, idx) => {
-          const li = document.createElement('li');
-          li.innerHTML = `<span class="step-num">${idx + 1}</span> <span>${escapeHtml(step)}</span>`;
-          stepsList.appendChild(li);
-        });
-      } else {
-        stepsBox.style.display = 'none';
-      }
+      // Safe Next Steps Answering the 3 Questions:
+      // 1. What should I avoid doing right now?
+      // 2. What should I verify independently?
+      // 3. Where can I report it or seek help?
+      avoidStepText.textContent = isBn ? res.avoidBn : (isEn ? res.avoidEn : res.avoidHi);
+      verifyStepText.textContent = isBn ? res.verifyBn : (isEn ? res.verifyEn : res.verifyHi);
+      reportStepText.textContent = isBn ? res.reportBn : (isEn ? res.reportEn : res.reportHi);
 
       // 1930 Helpline Box
       if (res.verdict === 'scam' || res.verdict === 'suspicious') {
@@ -1854,7 +2079,7 @@
     let initialLang = 'hi';
     try {
       const stored = localStorage.getItem('scam_saathi_lang');
-      if (stored === 'en' || stored === 'hi') initialLang = stored;
+      if (stored === 'en' || stored === 'hi' || stored === 'bn') initialLang = stored;
     } catch (e) {}
     setLanguage(initialLang);
   </script>
