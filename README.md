@@ -22,9 +22,8 @@ Scam Saathi bridges this gap. It evaluates suspicious SMS messages, WhatsApp for
 
 ### Core Value Proposition
 
-* **Zero Backend & Zero Cloud APIs:** The entire heuristic evaluation and OCR processing execute directly within the user's browser. No remote servers, no proprietary AI APIs, and no recurring infrastructure costs.
 * **100% Privacy by Architecture:** No message content, phone number, financial amount, or uploaded screenshot ever leaves the citizen's handset. 
-* **Multimodal Inspection:** Supports text input, clipboard paste, system voice-typing, drag-and-drop, and **on-device WebAssembly OCR (English + Hindi + Bengali)** for analyzing forwarded screenshots and flyers.
+* **Multimodal Inspection:** Supports text input, clipboard paste, **browser-native Voice-to-Text (Web Speech API in Hindi, English, and Bengali)**, drag-and-drop, and **on-device WebAssembly OCR (English + Hindi + Bengali)** for analyzing forwarded screenshots and flyers.
 * **Trilingual Accessibility:** Features a seamless, animated **हिन्दी | English | বাংলা** interface toggle that dynamically translates all static controls, sample test chips, and live result cards without reloading the page.
 * **Evidence-Based Clue Explanations:** Explains the specific warning signs (urgency, credential harvesting, unverified links, APK downloads/personal phone numbers) with direct quotes from the submitted message, rather than a generic verdict label. Clearly states when there is insufficient evidence.
 * **3-Question Defensive Action Framework:** Every analysis provides safe, concrete steps answering:
@@ -49,7 +48,7 @@ Scam Saathi bridges this gap. It evaluates suspicious SMS messages, WhatsApp for
 │  │ Electricity Dept: Power will be disconnected tonight at 9:30 PM  │  │
 │  │ due to unpaid bill. Immediately contact officer at 9876543210.   │  │
 │  └──────────────────────────────────────────────────────────────────┘  │
-│  [ 📷 Upload Screenshot ]  [ 📋 Paste Clipboard ]  [ ✕ Clear Input ]   │
+│  [ 📷 Screenshot ]  [ 🎙️ Speak / बोलें ]  [ 📋 Paste ]  [ ✕ Clear ]    │
 ├────────────────────────────────────────────────────────────────────────┤
 │                                                                        │
 │  🛑 HIGH SCAM RISK! (Score: 7.5)                                       │
@@ -82,7 +81,8 @@ Scam Saathi bridges this gap. It evaluates suspicious SMS messages, WhatsApp for
 
 ### 1. Multimodal Input Processing
 * **Text & Clipboard:** Direct message entry and one-tap clipboard paste with sanitized string handling.
-* **On-Device Screenshot OCR:** Integrates client-side WebAssembly OCR (Tesseract.js) lazy-loaded on-demand. Users can take a photo with their camera, upload an image from their gallery, drag-and-drop, or press `Ctrl+V` to paste an image directly.
+* **On-Device Voice-to-Text (Speech-to-Text):** Integrated via the browser's built-in Web Speech API (`SpeechRecognition`). Supports real-time speech transcription in **Hindi (`hi-IN`)**, **English (`en-IN`)**, and **Bengali (`bn-IN`)** with zero backend, zero external API keys, and 0 KB added package weight. Ideal for rural, elderly, and first-time smartphone users who prefer speaking over typing.
+* **On-Device Screenshot OCR:** Integrates client-side WebAssembly OCR (Tesseract.js) lazy-loaded on-demand (`eng+hin+ben`). Users can take a photo with their camera, upload an image from their gallery, drag-and-drop, or press `Ctrl+V` to paste an image directly.
 * **Zero Overhead on Initial Load:** The OCR engine is only fetched when the user triggers an image inspection, ensuring initial page loads on 3G/4G remain under 100 milliseconds.
 
 ### 2. Full Trilingual Parity (हिन्दी, English, বাংলা)

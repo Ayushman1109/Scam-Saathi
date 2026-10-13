@@ -297,6 +297,19 @@
       transform: scale(0.97);
     }
 
+    .btn-secondary.listening {
+      background: rgba(239, 68, 68, 0.22) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+      animation: pulse-mic 1.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-mic {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
     textarea#message-input {
       width: 100%;
       min-height: 145px;
@@ -396,6 +409,81 @@
       background: linear-gradient(90deg, #3b82f6, #10b981);
       border-radius: 999px;
       transition: width 0.25s ease;
+    }
+
+    /* Voice-to-Text Status Card */
+    .voice-status-box {
+      margin-top: 14px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid rgba(239, 68, 68, 0.5);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .voice-status-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .voice-wave {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 20px;
+    }
+
+    .voice-wave span {
+      width: 3.5px;
+      background: #ef4444;
+      border-radius: 999px;
+      animation: wave-bar 0.8s ease-in-out infinite alternate;
+    }
+    .voice-wave span:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+    .voice-wave span:nth-child(2) { height: 18px; animation-delay: 0.25s; }
+    .voice-wave span:nth-child(3) { height: 12px; animation-delay: 0.4s; }
+    .voice-wave span:nth-child(4) { height: 16px; animation-delay: 0.2s; }
+
+    @keyframes wave-bar {
+      0% { height: 6px; }
+      100% { height: 20px; }
+    }
+
+    .voice-text-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .voice-status-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .voice-status-sub {
+      font-size: 13px;
+      color: #fca5a5;
+    }
+
+    .btn-voice-stop {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .btn-voice-stop:hover {
+      background: rgba(239, 68, 68, 0.35);
+      color: #ffffff;
     }
 
     /* Drag & Drop Highlight on Card */
@@ -962,7 +1050,7 @@
       .input-actions {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr 0.8fr;
+        grid-template-columns: 1fr 1fr 1fr 0.75fr;
         gap: 6px;
       }
 
@@ -1153,6 +1241,10 @@
       .brand-title {
         font-size: 21px;
       }
+      .input-actions {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
       .btn-secondary {
         font-size: 11.5px;
         padding: 6px 2px;
@@ -1213,6 +1305,9 @@
           <button type="button" class="btn-secondary" id="image-btn" title="स्क्रीनशॉट या फोटो से जाँचें">
             📷 <span id="image-btn-text">स्क्रीनशॉट</span>
           </button>
+          <button type="button" class="btn-secondary" id="voice-btn" title="बोलकर इनपुट दें (Voice to Text)">
+            🎙️ <span id="voice-btn-text">बोलें</span>
+          </button>
           <button type="button" class="btn-secondary" id="paste-btn" title="क्लिपबोर्ड से पेस्ट करें">
             📋 <span id="paste-btn-text">पेस्ट करें</span>
           </button>
@@ -1232,6 +1327,20 @@
 
       <div class="input-tip">
         💡 <span id="input-tip-text">सुझाव: आप स्क्रीनशॉट अपलोड कर सकते हैं, ड्रैग कर सकते हैं या बोलकर टाइप कर सकते हैं।</span>
+      </div>
+
+      <!-- Voice-to-Text Status Indicator -->
+      <div id="voice-status-box" class="voice-status-box" style="display: none;">
+        <div class="voice-status-content">
+          <div class="voice-wave">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="voice-text-col">
+            <div id="voice-status-title" class="voice-status-title">सुन रहे हैं... बोलिए</div>
+            <div id="voice-status-sub" class="voice-status-sub">आपकी आवाज़ सीधे टेक्स्ट में बदल रही है</div>
+          </div>
+          <button type="button" id="voice-stop-btn" class="btn-voice-stop">✕ रोकें</button>
+        </div>
       </div>
 
       <!-- OCR Progress Status Indicator -->
@@ -1414,6 +1523,7 @@
         trust_pill: "🛡️ 100% प्राइवेट • कोई डेटा आपके फ़ोन से बाहर नहीं जाता",
         input_label: "संदिग्ध मैसेज यहाँ डालें:",
         image_btn: "स्क्रीनशॉट",
+        voice_btn: "बोलें",
         paste_btn: "पेस्ट करें",
         clear_btn: "साफ़",
         placeholder: "यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश, इंग्लिश या बांग्ला)",
@@ -1444,6 +1554,14 @@
         toast_ocr_success: "📷 स्क्रीनशॉट से टेक्स्ट निकाल लिया गया!",
         toast_ocr_empty: "इमेज में कोई पढ़ने योग्य टेक्स्ट नहीं मिला",
         toast_ocr_err: "स्कैन विफल रहा। कृपया टेक्स्ट पेस्ट करें।",
+        voice_listening: "सुन रहे हैं... बोलिए",
+        voice_listening_sub: "आपकी आवाज़ सीधे टेक्स्ट में बदल रही है",
+        voice_stop_btn: "✕ रोकें",
+        toast_voice_started: "🎙️ माइक्रोफ़ोन शुरू हुआ, बोलिए...",
+        toast_voice_done: "🎙️ आवाज़ से टेक्स्ट लिखा गया!",
+        toast_voice_empty: "कोई आवाज़ नहीं सुनाई दी",
+        toast_voice_unsupported: "इस ब्राउज़र में वॉइस टाइपिंग उपलब्ध नहीं है",
+        toast_voice_permission_denied: "माइक्रोफ़ोन की अनुमति अस्वीकृत कर दी गई",
         engine_not_loaded: "जाँच इंजन लोड नहीं हो सका। कृपया पेज रीफ़्रेश करें।",
         score_label: "स्कोर",
         badge_scam: "ठगी का ख़तरा!",
@@ -1491,6 +1609,7 @@
         trust_pill: "🛡️ 100% Private • No data ever leaves your device",
         input_label: "Paste or enter suspicious message:",
         image_btn: "Screenshot",
+        voice_btn: "Speak",
         paste_btn: "Paste",
         clear_btn: "Clear",
         placeholder: "Paste any suspicious SMS, WhatsApp message, or link here... (English, Hindi, Bengali, or Hinglish)",
@@ -1521,6 +1640,14 @@
         toast_ocr_success: "📷 Text extracted from image!",
         toast_ocr_empty: "No readable text found in image",
         toast_ocr_err: "Scan failed. Please paste text directly.",
+        voice_listening: "Listening... speak now",
+        voice_listening_sub: "Your speech is being transcribed live",
+        voice_stop_btn: "✕ Stop",
+        toast_voice_started: "🎙️ Listening, please speak...",
+        toast_voice_done: "🎙️ Voice transcription complete!",
+        toast_voice_empty: "No speech detected",
+        toast_voice_unsupported: "Speech recognition not supported in this browser",
+        toast_voice_permission_denied: "Microphone access was denied",
         engine_not_loaded: "Detection engine could not load. Please refresh the page.",
         score_label: "Score",
         badge_scam: "High Scam Risk!",
@@ -1568,6 +1695,7 @@
         trust_pill: "🛡️ ১০০% ব্যক্তিগত • কোনো ডেটা আপনার ফোনের বাইরে যায় না",
         input_label: "সন্দেহজনক মেসেজ এখানে পেস্ট বা টাইপ করুন:",
         image_btn: "স্ক্রিনশট",
+        voice_btn: "বলুন",
         paste_btn: "পেস্ট করুন",
         clear_btn: "মুছুন",
         placeholder: "এখানে সন্দেহজনক SMS, হোয়াটসঅ্যাপ মেসেজ বা লিঙ্ক পেস্ট করুন... (বাংলা, ইংরেজি বা হিন্দি)",
@@ -1598,6 +1726,14 @@
         toast_ocr_success: "📷 ছবি থেকে লেখা উদ্ধার হয়েছে!",
         toast_ocr_empty: "ছবিতে কোনো পাঠযোগ্য লেখা মেলেনি",
         toast_ocr_err: "স্ক্যান ব্যর্থ হয়েছে। সরাসরি লেখা পেস্ট করুন।",
+        voice_listening: "শুনছি... বলুন",
+        voice_listening_sub: "আপনার কণ্ঠস্বর সরাসরি লেখায় পরিবর্তিত হচ্ছে",
+        voice_stop_btn: "✕ থামান",
+        toast_voice_started: "🎙️ মাইক্রোফোন চালু হয়েছে, বলুন...",
+        toast_voice_done: "🎙️ ভয়েস ট্রান্সক্রিপশন সম্পন্ন!",
+        toast_voice_empty: "কোনো কণ্ঠস্বর শোনা যায়নি",
+        toast_voice_unsupported: "এই ব্রাউজারে ভয়েস টাইপিং সমর্থিত নয়",
+        toast_voice_permission_denied: "মাইক্রোফোনের অনুমতি প্রত্যাখ্যাত হয়েছে",
         engine_not_loaded: "ডিটেকশন ইঞ্জিন লোড করা যায়নি। পেজ রিফ্রেশ করুন।",
         score_label: "স্কোর",
         badge_scam: "প্রতারণার উচ্চ ঝুঁকি!",
@@ -1658,6 +1794,12 @@
     const imageBtn = document.getElementById('image-btn');
     const imageBtnText = document.getElementById('image-btn-text');
     const imageFileInput = document.getElementById('image-file-input');
+    const voiceBtn = document.getElementById('voice-btn');
+    const voiceBtnText = document.getElementById('voice-btn-text');
+    const voiceStatusBox = document.getElementById('voice-status-box');
+    const voiceStatusTitle = document.getElementById('voice-status-title');
+    const voiceStatusSub = document.getElementById('voice-status-sub');
+    const voiceStopBtn = document.getElementById('voice-stop-btn');
     const pasteBtnText = document.getElementById('paste-btn-text');
     const clearBtnText = document.getElementById('clear-btn-text');
     const messageInput = document.getElementById('message-input');
@@ -1751,6 +1893,7 @@
 
       inputLabelText.textContent = t.input_label;
       imageBtnText.textContent = t.image_btn;
+      voiceBtnText.textContent = t.voice_btn;
       pasteBtnText.textContent = t.paste_btn;
       clearBtnText.textContent = t.clear_btn;
       messageInput.setAttribute('placeholder', t.placeholder);
@@ -1758,6 +1901,11 @@
       checkBtnText.textContent = t.check_btn;
       sampleTitleText.textContent = t.sample_title;
       ocrStatusSub.textContent = t.ocr_privacy;
+      if (isListening) {
+        voiceStatusTitle.textContent = t.voice_listening;
+        voiceStatusSub.textContent = t.voice_listening_sub;
+        voiceStopBtn.textContent = t.voice_stop_btn;
+      }
 
       warningSignsTitleText.textContent = t.warning_signs_title;
       nextStepsTitleText.textContent = t.next_steps_title;
@@ -1915,6 +2063,134 @@
       }
     });
 
+
+    // On-Device Voice-to-Text (Web Speech API supporting Hindi, English, and Bengali)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isListening = false;
+    let finalTranscript = '';
+
+    function getSpeechLocale(lang) {
+      if (lang === 'hi') return 'hi-IN';
+      if (lang === 'bn') return 'bn-IN';
+      return 'en-IN';
+    }
+
+    function updateVoiceUI(active) {
+      const t = I18N[currentLang];
+      voiceBtn.classList.toggle('listening', active);
+      if (active) {
+        voiceStatusBox.style.display = 'block';
+        voiceStatusTitle.textContent = t.voice_listening;
+        voiceStatusSub.textContent = t.voice_listening_sub;
+        voiceStopBtn.textContent = t.voice_stop_btn;
+      } else {
+        voiceStatusBox.style.display = 'none';
+      }
+    }
+
+    function initSpeechRecognition() {
+      if (!SpeechRecognition) return null;
+      try {
+        const sr = new SpeechRecognition();
+        sr.continuous = false;
+        sr.interimResults = true;
+        sr.maxAlternatives = 1;
+
+        sr.onstart = () => {
+          isListening = true;
+          updateVoiceUI(true);
+          showToast(I18N[currentLang].toast_voice_started);
+        };
+
+        sr.onresult = (event) => {
+          let interim = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+              interim += event.results[i][0].transcript;
+            }
+          }
+          const text = (finalTranscript + ' ' + interim).trim();
+          if (text) {
+            messageInput.value = text;
+          }
+        };
+
+        sr.onerror = (event) => {
+          console.warn('Speech recognition error:', event.error);
+          if (event.error === 'not-allowed') {
+            showToast(I18N[currentLang].toast_voice_permission_denied);
+          }
+          stopListening();
+        };
+
+        sr.onend = () => {
+          const wasListening = isListening;
+          isListening = false;
+          updateVoiceUI(false);
+          const text = messageInput.value.trim();
+          if (wasListening && text) {
+            showToast(I18N[currentLang].toast_voice_done);
+            runAnalysis();
+          } else if (wasListening && !text) {
+            showToast(I18N[currentLang].toast_voice_empty);
+          }
+        };
+
+        return sr;
+      } catch (err) {
+        console.error('Speech recognition init error:', err);
+        return null;
+      }
+    }
+
+    function startListening() {
+      if (!SpeechRecognition) {
+        showToast(I18N[currentLang].toast_voice_unsupported);
+        return;
+      }
+
+      if (isListening) {
+        stopListening();
+        return;
+      }
+
+      if (!recognition) {
+        recognition = initSpeechRecognition();
+      }
+
+      if (!recognition) {
+        showToast(I18N[currentLang].toast_voice_unsupported);
+        return;
+      }
+
+      try {
+        recognition.lang = getSpeechLocale(currentLang);
+        finalTranscript = '';
+        recognition.start();
+      } catch (err) {
+        console.warn('Recognition start caught:', err);
+        try { recognition.stop(); } catch(e){}
+        isListening = false;
+        updateVoiceUI(false);
+      }
+    }
+
+    function stopListening() {
+      if (recognition && isListening) {
+        try {
+          recognition.stop();
+        } catch (e) {}
+      }
+      isListening = false;
+      updateVoiceUI(false);
+    }
+
+    voiceBtn.addEventListener('click', startListening);
+    voiceStopBtn.addEventListener('click', stopListening);
+
     // Sample chip click handlers
     document.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
@@ -1953,6 +2229,7 @@
 
     // Clear text
     clearBtn.addEventListener('click', () => {
+      stopListening();
       const t = I18N[currentLang];
       messageInput.value = '';
       lastResult = null;
