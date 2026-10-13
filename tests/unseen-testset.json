@@ -408,6 +408,28 @@
     "lang": "bengali",
     "expected": "low_risk",
     "text": "আপনার ব্যাংক অ্যাকাউন্টে এলপিজি গ্যাস সিলিন্ডারের ভর্তুকি ₹৩০০ সফলভাবে জমা হয়েছে। -ইন্ডিয়ান অয়েল (iocl.com)"
+  },
+  {
+    "id": "u63",
+    "lang": "english",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "A guy told me that if I give him money he will double my money in 25 days"
+  },
+  {
+    "id": "u64",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "21 दिन में पैसा डबल करने की स्कीम! आज ही 5000 रुपये इन्वेस्ट करें और पाएं 10000 रुपये।"
+  },
+  {
+    "id": "u65",
+    "lang": "bengali",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "টাকা দ্বিগুণ করার স্কিম: মাত্র ২৫ দিনে টাকা ডাবল করে দেব, এখনই ৫০০০ টাকা পাঠান।"
   }
 ]
+
 

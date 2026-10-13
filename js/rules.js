@@ -689,6 +689,57 @@
           "পুলিশ কেস", "আইনি পদক্ষেপ", "এফআইআর", "কোর্ট নোটিশ", "কাস্টমস পার্সেল", "ওয়ারেন্ট", "আইনি নোটিশ"
         ],
         weak: ["arrest", "gireftar", "giraftari", "गिरफ्तार", "police", "पुलिस", "court", "कोर्ट", "customs", "গ্রেফতার", "পুলিশ", "কোর্ট", "আদালত", "কাস্টমস"]
+      },
+
+      ponzi_investment: {
+        nameHi: "पैसा डबल / पोंजी स्कीम का झांसा",
+        nameEn: "Ponzi Scheme / Money Doubling Scam",
+        nameBn: "টাকা দ্বিগুণ / পঞ্জি স্কিমের মিথ্যা প্রলোভন",
+        reasonHi: "इसमें कम समय में पैसे डबल या असामान्य मुनाफे का झांसा दिया गया है",
+        reasonEn: "This message promises unrealistic returns or money doubling in a short period",
+        reasonBn: "এতে অল্প সময়ে টাকা দ্বিগুণ বা অস্বাভাবিক লাভের মিথ্যা প্রলোভন দেওয়া হয়েছে",
+        explainHi: "कम समय में पैसे दोगुना करने, फिक्स्ड हाई रिटर्न देने या पैसे देकर डबल पाने का दावा 100% पोंजी ठगी है। सेबी (SEBI) या आरबीआई (RBI) ऐसी किसी स्कीम को मंज़ूरी नहीं देते। एक बार पैसे देने के बाद ठग गायब हो जाते हैं।",
+        explainEn: "Promises to double money in a few days or guaranteed high returns are textbook Ponzi/investment frauds. No SEBI or RBI registered institution guarantees doubling money. Once you send money, scammers disappear.",
+        explainBn: "অল্প কয়েক দিনে টাকা দ্বিগুণ করা বা নিশ্চিত অস্বাভাবিক লাভের প্রতিশ্রুতি ১০০% পঞ্জি প্রতারণা। কোনো সেবি বা আরবিআই নিয়ন্ত্রিত সংস্থা টাকা দ্বিগুণ করার গ্যারান্টি দেয় না। টাকা পাঠানোর পর প্রতারকরা উধাও হয়ে যায়।",
+        stepsHi: [
+          "पैसे दोगुना करने के लालच में किसी अनजान व्यक्ति को पैसे न भेजें।",
+          "किसी भी निवेश से पहले सेबी (SEBI) या आरबीआई (RBI) की आधिकारिक वेबसाइट पर पंजीकरण जाँचें।"
+        ],
+        stepsEn: [
+          "Never send money to unverified individuals promising money doubling or unrealistic profits.",
+          "Verify any financial or investment scheme on SEBI (sebi.gov.in) or RBI websites."
+        ],
+        stepsBn: [
+          "টাকা দ্বিগুণ করার লোভে কোনো অচেনা ব্যক্তিকে টাকা পাঠাবেন না।",
+          "বিনিয়োগের পূর্বে সেবি (SEBI) বা আরবিআই (RBI) অফিশিয়াল পোর্টালে যাচাই করুন।"
+        ],
+        avoidEn: "Do NOT transfer money to anyone promising to double your funds or offering guaranteed profits.",
+        avoidHi: "अभी क्या न करें: पैसे दोगुना करने या गारंटीड मुनाफे का वादा करने वाले किसी भी व्यक्ति को पैसे न भेजें।",
+        avoidBn: "এখন কী করবেন না: টাকা দ্বিগুণ বা নিশ্চিত মুনাফার প্রতিশ্রুতি দেওয়া কাউকে কোনো টাকা পাঠাবেন না।",
+        verifyEn: "What to verify independently: Check SEBI registry (sebi.gov.in) to verify whether the financial entity is legally licensed.",
+        verifyHi: "खुद कहाँ जाँचें: सेबी (sebi.gov.in) पर जाकर देखें कि क्या संबंधित कंपनी निवेश लेने के लिए अधिकृत है।",
+        verifyBn: "নিজে কোথায় যাচাই করবেন: সেবি (sebi.gov.in) পোর্টালে গিয়ে যাচাই করুন সংস্থাটি অনুমোদিত কি না।",
+        reportEn: "Where to report or seek help: Report fraudulent Ponzi and investment schemes immediately to 1930 and cybercrime.gov.in.",
+        reportHi: "कहाँ रिपोर्ट करें या मदद लें: फर्जी निवेश और पोंजी धोखाधड़ी की तुरंत शिकायत 1930 और cybercrime.gov.in पर करें।",
+        reportBn: "কোথায় रिपोर्ट করবেন বা সাহায্য নেবেন: জাল বিনিয়োগ ও পঞ্জি প্রতারণার অভিযোগ অবিলম্বে ১৯৩০ ও cybercrime.gov.in-এ জানান।",
+        strong: [
+          "double money", "double your money", "double my money", "will double my money", "will double your money",
+          "double in 25 days", "double in 21 days", "double in 20 days", "double in 15 days", "double in 10 days", "double in 7 days", "double in 30 days",
+          "give money double", "give him money he will double", "give money will double", "give me money double",
+          "double your investment", "double the investment", "guaranteed 100% returns", "100% return guaranteed",
+          "paisa double", "paise double", "paise dogune", "paisa doguna", "21 din me paisa double", "25 din me paisa double", "paisa double scheme",
+          "rupaye double", "rupaye dogune", "double return", "guaranteed profit daily", "invest 1000 get 2000", "invest 500 get 1000",
+          "पैसा डबल", "पैसे डबल", "पैसे दोगुने", "पैसा दोगुना", "२१ दिन में पैसा डबल", "२५ दिन में पैसा डबल", "पैसे डबल करने की स्कीम",
+          "रुपये डबल", "डबल रिटर्न", "पैसे दोगुना", "पैसे डबल मिलेंगे", "रुपए डबल",
+          "টাকা ডাবল", "টাকা দ্বিগুণ", "টাকা ডাবল করে দেব", "টাকা দ্বিগুণ করে দেব", "২৫ দিনে টাকা ডাবল", "টাকা দ্বিগুণ করার স্কিম"
+        ],
+        medium: [
+          "double return", "double returns", "high return investment", "daily return investment", "guaranteed profit", "guaranteed profit in",
+          "paisa dugna", "paise dugne", "din me double", "din mein double", "din me paisa", "invest now get double", "money doubled",
+          "गारंटीड मुनाफा", "रोजाना मुनाफा", "गारंटीड रिटर्न", "मुनाफा गारंटी", "दिन में डबल", "इन्वेस्ट करें डबल पाएं",
+          "নিশ্চিত লাভ", "দৈনিক লাভ", "টাকা বাড়ানোর স্কিম", "দ্বিগুণ লাভ"
+        ],
+        weak: ["double", "डबल", "दोगुना", "দ্বিগুণ", "डাবল", "invest", "investment", "निवेश", "বিনিয়োগ", "ponzi", "पोंजी", "পঞ্জি"]
       }
     },
 

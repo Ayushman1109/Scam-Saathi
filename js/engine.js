@@ -169,7 +169,7 @@
     }
 
     // Clue 2: Requests an OTP, PIN, password, or payment
-    var credCats = ["otp_request", "info_request", "upi_refund"];
+    var credCats = ["otp_request", "info_request", "upi_refund", "ponzi_investment"];
     var hasCredCat = credCats.some(function (c) { return cats[c] && cats[c].score >= W.medium; });
     var credMatch = raw.match(/\b(?:otp|upi\s*pin|atm\s*pin|cvv|password|ओटीपी|पिन|পাসওয়ার্ড|ওটিপি)\b/i);
     if (hasCredCat || credMatch) {
@@ -196,7 +196,7 @@
 
     // Clue 3: Uses an unfamiliar link or unexpected reward
     var hasLinkSignal = signals.some(function (s) { return s.id === "link" || s.id === "shortener" || s.id === "lookalike"; });
-    var rewardCats = ["lottery", "govt_scheme"];
+    var rewardCats = ["lottery", "govt_scheme", "ponzi_investment"];
     var hasRewardCat = rewardCats.some(function (c) { return cats[c] && cats[c].score >= W.medium; });
     if (hasLinkSignal || hasRewardCat) {
       var evidenceLink = [];

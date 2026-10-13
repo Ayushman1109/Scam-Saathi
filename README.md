@@ -2,7 +2,7 @@
 ### On-Device Trilingual Cyber Scam Detection & Citizen Safety Engine
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Test Suite](https://img.shields.io/badge/Tests-92%2F92%20Passing%20(100%25)-success.svg)](tests/run-tests.js)
+[![Test Suite](https://img.shields.io/badge/Tests-95%2F95%20Passing%20(100%25)-success.svg)](tests/run-tests.js)
 [![Theme](https://img.shields.io/badge/Hackathon-Digital%20Safety%20%26%20Cyber%20Fraud-orange.svg)](https://mybharat.gov.in/pages/hack-for-social-cause)
 [![Knowledge Partner](https://img.shields.io/badge/Knowledge%20Partner-IIT%20Bombay-red.svg)](https://www.iitb.ac.in)
 
@@ -219,10 +219,10 @@ The test runner requires only [Node.js](https://nodejs.org/):
 # Run baseline tests (30 cases)
 node tests/run-tests.js
 
-# Run unseen real-world dataset (62 cases across EN, HI, BN)
+# Run unseen real-world dataset (65 cases across EN, HI, BN)
 node tests/run-tests.js --unseen
 
-# Run full suite with verbose token trace (92 cases)
+# Run full suite with verbose token trace (95 cases)
 node tests/run-tests.js --all -v
 ```
 
