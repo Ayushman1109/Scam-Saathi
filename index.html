@@ -786,6 +786,284 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* =========================================================
+       Mobile Responsive Design System (Screens <= 600px)
+       ========================================================= */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px 10px 32px;
+        font-size: 16px;
+      }
+
+      .container {
+        gap: 14px;
+      }
+
+      /* Top Navigation Bar */
+      .top-nav-bar {
+        margin-bottom: 4px;
+      }
+
+      .offline-badge {
+        font-size: 11.5px;
+        padding: 4px 8px;
+        gap: 5px;
+      }
+
+      .offline-dot {
+        width: 6px;
+        height: 6px;
+      }
+
+      .lang-btn {
+        min-width: 58px;
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+
+      /* Header */
+      header {
+        padding: 0;
+      }
+
+      .brand-badge {
+        font-size: 11.5px;
+        padding: 3px 10px;
+        margin-bottom: 8px;
+      }
+
+      .brand-title {
+        font-size: 23px;
+        gap: 8px;
+      }
+
+      .brand-title img {
+        width: 28px;
+        height: 28px;
+      }
+
+      .brand-subtitle {
+        font-size: 14px;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
+      .trust-pill {
+        font-size: 12px;
+        padding: 4px 10px;
+        margin-top: 6px;
+      }
+
+      /* Main Input Card */
+      .card {
+        padding: 14px 12px;
+        border-radius: var(--radius-md);
+      }
+
+      /* Stack label and clean 3-column button grid */
+      .input-label-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .input-label {
+        font-size: 15.5px;
+      }
+
+      .input-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 0.8fr;
+        gap: 6px;
+      }
+
+      .btn-secondary {
+        justify-content: center;
+        padding: 7px 4px;
+        font-size: 12.5px;
+        white-space: nowrap;
+      }
+
+      textarea#message-input {
+        min-height: 115px;
+        padding: 12px;
+        font-size: 16px;
+        line-height: 1.45;
+        border-radius: 10px;
+      }
+
+      .input-tip {
+        font-size: 12px;
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+
+      .btn-primary {
+        min-height: 48px;
+        font-size: 17px;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+
+      /* OCR Progress Box */
+      .ocr-status-box {
+        margin-top: 10px;
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .ocr-status-title {
+        font-size: 13.5px;
+      }
+
+      .ocr-status-sub {
+        font-size: 11.5px;
+      }
+
+      /* Quick Test Chips */
+      .sample-section {
+        margin-top: 12px;
+        padding-top: 10px;
+      }
+
+      .sample-title {
+        font-size: 12.5px;
+        margin-bottom: 8px;
+      }
+
+      .chips-container {
+        gap: 6px;
+      }
+
+      .chip {
+        font-size: 12px;
+        padding: 4px 9px;
+        line-height: 1.35;
+      }
+
+      /* Result Card */
+      .result-card {
+        padding: 16px 14px;
+        border-radius: var(--radius-md);
+      }
+
+      .result-top-badge {
+        font-size: 13px;
+        padding: 4px 10px;
+        margin-bottom: 10px;
+      }
+
+      .result-headline {
+        font-size: 19px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+      }
+
+      .result-explanation {
+        font-size: 14.5px;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
+      .reasons-box, .steps-box {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+      }
+
+      .box-title {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .reasons-list {
+        gap: 6px;
+      }
+
+      .reasons-list li {
+        font-size: 13.5px;
+        line-height: 1.45;
+      }
+
+      .steps-list {
+        gap: 8px;
+      }
+
+      .steps-list li {
+        font-size: 14px;
+        gap: 8px;
+        line-height: 1.45;
+      }
+
+      .step-num {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        font-size: 12px;
+      }
+
+      /* Helpline Box */
+      .helpline-action-box {
+        padding: 14px 12px;
+        border-radius: 10px;
+      }
+
+      .helpline-title {
+        font-size: 14px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+
+      .btn-call-1930 {
+        min-height: 48px;
+        font-size: 16px;
+        border-radius: 10px;
+      }
+
+      .official-portals-row {
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .portal-link {
+        font-size: 12px;
+        padding: 3px 8px;
+      }
+
+      /* Privacy Banner & Footer */
+      .privacy-banner {
+        padding: 10px 12px;
+        font-size: 12.5px;
+        gap: 10px;
+      }
+
+      .privacy-banner svg {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+      }
+
+      footer {
+        margin-top: 16px;
+        padding-top: 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Extra Narrow Devices (<= 375px e.g. iPhone SE) */
+    @media (max-width: 375px) {
+      .brand-title {
+        font-size: 21px;
+      }
+      .btn-secondary {
+        font-size: 11.5px;
+        padding: 6px 2px;
+        gap: 3px;
+      }
+    }
   </style>
 </head>
 <body>
