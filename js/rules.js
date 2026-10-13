@@ -727,19 +727,33 @@
           "double in 25 days", "double in 21 days", "double in 20 days", "double in 15 days", "double in 10 days", "double in 7 days", "double in 30 days",
           "give money double", "give him money he will double", "give money will double", "give me money double",
           "double your investment", "double the investment", "guaranteed 100% returns", "100% return guaranteed",
+          "triple money", "triple your money", "triple my money", "will triple my money", "will triple your money", "to triple money", "to double money",
+          "send money to multiply", "send money to multiply it", "money to multiply", "send money to double", "send money to triple",
+          "send money on qr to triple", "send money on qr to double", "send money on qr", "send money qr", "transfer money on qr",
+          "qr to triple", "qr to double", "qr to triple money", "qr to double money", "qr code to triple", "qr code to double",
+          "triple in 25 days", "triple in 21 days", "triple in 20 days", "triple in 10 days", "triple in 7 days", "triple your investment",
+          "quadruple money", "multiply money", "multiply your money", "multiply my money",
+          "2x your money", "3x your money", "5x your money", "10x your money", "2x return", "3x return", "5x return", "10x return", "2x returns", "3x returns", "5x returns", "10x returns",
           "paisa double", "paise double", "paise dogune", "paisa doguna", "21 din me paisa double", "25 din me paisa double", "paisa double scheme",
+          "paisa triple", "paise triple", "paisa tinguna", "paise tingune", "paisa teenguna", "paise teengune", "3 guna paisa", "teen guna paisa", "3 guna return", "teen guna return",
           "rupaye double", "rupaye dogune", "double return", "guaranteed profit daily", "invest 1000 get 2000", "invest 500 get 1000",
+          "invest 1000 get 3000", "invest 500 get 1500", "invest 1000 get 5000", "invest 1000 get 10000",
           "पैसा डबल", "पैसे डबल", "पैसे दोगुने", "पैसा दोगुना", "२१ दिन में पैसा डबल", "२५ दिन में पैसा डबल", "पैसे डबल करने की स्कीम",
-          "रुपये डबल", "डबल रिटर्न", "पैसे दोगुना", "पैसे डबल मिलेंगे", "रुपए डबल",
-          "টাকা ডাবল", "টাকা দ্বিগুণ", "টাকা ডাবল করে দেব", "টাকা দ্বিগুণ করে দেব", "২৫ দিনে টাকা ডাবল", "টাকা দ্বিগুণ করার স্কিম"
+          "पैसा ट्रिपल", "पैसे ट्रिपल", "पैसा तिगुना", "पैसे तिगुने", "तीन गुना पैसा", "3 गुना पैसा", "पैसे तीन गुना", "पैसा तीन गुना", "तिगुना रिटर्न", "तीन गुना रिटर्न",
+          "रुपये डबल", "डबल रिटर्न", "पैसे दोगुना", "पैसे डबल मिलेंगे", "रुपए डबल", "रुपये तिगुने",
+          "টাকা ডাবল", "টাকা দ্বিগুণ", "টাকা ডাবল করে দেব", "টাকা দ্বিগুণ করে দেব", "২৫ দিনে টাকা ডাবল", "টাকা দ্বিগুণ করার স্কিম",
+          "টাকা ট্রিপল", "টাকা তিনগুণ", "টাকা তিনগুণ করে দেব", "তিনগুণ লাভ", "তিন গুণ টাকা", "টাকা ৩ গুণ"
         ],
         medium: [
-          "double return", "double returns", "high return investment", "daily return investment", "guaranteed profit", "guaranteed profit in",
-          "paisa dugna", "paise dugne", "din me double", "din mein double", "din me paisa", "invest now get double", "money doubled",
-          "गारंटीड मुनाफा", "रोजाना मुनाफा", "गारंटीड रिटर्न", "मुनाफा गारंटी", "दिन में डबल", "इन्वेस्ट करें डबल पाएं",
-          "নিশ্চিত লাভ", "দৈনিক লাভ", "টাকা বাড়ানোর স্কিম", "দ্বিগুণ লাভ"
+          "double return", "double returns", "triple return", "triple returns", "3x profit", "5x profit", "10x profit",
+          "high return investment", "daily return investment", "guaranteed profit", "guaranteed profit in",
+          "paisa dugna", "paise dugne", "din me double", "din mein double", "din me paisa", "din me triple", "din mein triple",
+          "invest now get double", "money doubled", "money tripled", "multiply investment",
+          "send money on qr", "send to qr", "qr par paise", "qr pe paise",
+          "गारंटीड मुनाफा", "रोजाना मुनाफा", "गारंटीड रिटर्न", "मुनाफा गारंटी", "दिन में डबल", "दिन में ट्रिपल", "इन्वेस्ट करें डबल पाएं", "क्यूआर पर पैसे",
+          "নিশ্চিত লাভ", "দৈনিক লাভ", "টাকা বাড়ানোর স্কিম", "দ্বিগুণ লাভ", "তিনগুণ লাভ"
         ],
-        weak: ["double", "डबल", "दोगुना", "দ্বিগুণ", "डাবল", "invest", "investment", "निवेश", "বিনিয়োগ", "ponzi", "पोंजी", "পঞ্জি"]
+        weak: ["double", "triple", "डबल", "ट्रिपल", "दोगुना", "तिगुना", "দ্বিগুণ", "তিনগুণ", "डাবল", "invest", "investment", "निवेश", "বিনিয়োগ", "ponzi", "पोंजी", "পঞ্জি"]
       }
     },
 

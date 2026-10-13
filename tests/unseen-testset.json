@@ -429,7 +429,15 @@
     "expected": "scam",
     "category": "ponzi_investment",
     "text": "টাকা দ্বিগুণ করার স্কিম: মাত্র ২৫ দিনে টাকা ডাবল করে দেব, এখনই ৫০০০ টাকা পাঠান।"
+  },
+  {
+    "id": "u66",
+    "lang": "english",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "A guy told me to send money on qr to triple money"
   }
 ]
+
 
 
