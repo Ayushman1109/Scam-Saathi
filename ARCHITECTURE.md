@@ -32,7 +32,6 @@ flowchart TD
     subgraph Ingestion Layer
         A1[Suspicious SMS / WhatsApp / Web Link]
         A2[Screenshot / Photo / Clipboard Image] -->|On-Device Tesseract.js WASM\neng + hin + ben| A1
-        A3[Spoken Voice Audio] -->|Browser Web Speech API\nhi-IN / en-IN / bn-IN| A1
     end
 
     subgraph Preprocessing & Normalization
@@ -202,19 +201,6 @@ To inspect screenshots and forwarded flyers without cloud servers:
 2. **Worker Isolation:** The OCR engine executes inside a dedicated Web Worker thread. Heavy pixel computation never blocks the main UI thread, preserving a smooth 60fps frame rate.
 3. **Trilingual Recognition Catalog:** The worker initializes with `eng+hin+ben`, extracting Devanagari text, Bengali script, and English/Hinglish alphanumeric characters simultaneously.
 4. **Fuzzy Resiliency:** OCR extractions on low-resolution phone screens frequently introduce minor character artifacts (e.g., `0` misread as `O`, or `l` as `1`). Scam Saathi's fuzzy Levenshtein matcher naturally absorbs these character variances without degrading classification accuracy.
-
-### 5.1 Browser-Native Voice-to-Text (Speech-to-Text) Architecture
-
-To empower rural, elderly, and first-time smartphone users who may struggle with typing complex scam messages:
-
-1. **Native Web Speech API:** Utilizes standard browser speech recognition (`window.SpeechRecognition || window.webkitSpeechRecognition`), requiring zero third-party dependencies, zero cloud API keys, and 0 KB added package footprint.
-2. **Dynamic Trilingual Locales:** The voice listener automatically binds to the user's active interface language:
-   - **Hindi:** `hi-IN`
-   - **Bengali:** `bn-IN`
-   - **English (India):** `en-IN`
-   Switching the language toggle instantly switches the active speech recognition locale.
-3. **Real-Time Interim Transcription:** Streams transcribed speech into the input textarea in real time while displaying an animated audio waveform indicator and a dedicated stop control.
-4. **Instant End-of-Speech Verification:** When the user finishes speaking, the engine automatically runs heuristic evaluation without requiring manual clicks, lowering cognitive barriers to cyber safety verification.
 
 ---
 
