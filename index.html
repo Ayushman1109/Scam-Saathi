@@ -324,6 +324,78 @@
       gap: 6px;
     }
 
+    /* On-Device OCR Scanner Card */
+    .ocr-status-box {
+      margin-top: 14px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1.5px solid rgba(59, 130, 246, 0.45);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .ocr-status-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ocr-spinner {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 3px solid rgba(59, 130, 246, 0.25);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .ocr-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ocr-status-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .ocr-status-sub {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .ocr-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .ocr-bar-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Drag & Drop Highlight on Card */
+    .card.drag-over {
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 4px var(--primary-glow) !important;
+    }
+
     /* Big Action Check Button */
     .btn-primary {
       width: 100%;
@@ -762,6 +834,9 @@
           <span>📨</span> <span id="input-label-text">संदिग्ध मैसेज यहाँ डालें:</span>
         </label>
         <div class="input-actions">
+          <button type="button" class="btn-secondary" id="image-btn" title="स्क्रीनशॉट या फोटो से जाँचें">
+            📷 <span id="image-btn-text">स्क्रीनशॉट</span>
+          </button>
           <button type="button" class="btn-secondary" id="paste-btn" title="क्लिपबोर्ड से पेस्ट करें">
             📋 <span id="paste-btn-text">पेस्ट करें</span>
           </button>
@@ -769,6 +844,7 @@
             ✕ <span id="clear-btn-text">साफ़</span>
           </button>
         </div>
+        <input type="file" id="image-file-input" accept="image/*" style="display:none">
       </div>
 
       <textarea 
@@ -779,7 +855,21 @@
       ></textarea>
 
       <div class="input-tip">
-        💡 <span id="input-tip-text">सुझाव: आप अपने कीबोर्ड के माइक से भी बोलकर टाइप कर सकते हैं।</span>
+        💡 <span id="input-tip-text">सुझाव: आप स्क्रीनशॉट अपलोड कर सकते हैं, ड्रैग कर सकते हैं या बोलकर टाइप कर सकते हैं।</span>
+      </div>
+
+      <!-- OCR Progress Status Indicator -->
+      <div id="ocr-status-box" class="ocr-status-box" style="display: none;">
+        <div class="ocr-status-content">
+          <div class="ocr-spinner"></div>
+          <div class="ocr-text-col">
+            <div id="ocr-status-title" class="ocr-status-title">स्क्रीनशॉट से टेक्स्ट पढ़ा जा रहा है...</div>
+            <div id="ocr-status-sub" class="ocr-status-sub">100% ऑन-डिवाइस स्कैन • कोई इमेज फ़ोन से बाहर नहीं जाती</div>
+          </div>
+        </div>
+        <div class="ocr-bar-bg">
+          <div id="ocr-bar-fill" class="ocr-bar-fill"></div>
+        </div>
       </div>
 
       <button type="button" class="btn-primary" id="check-btn">
@@ -918,10 +1008,11 @@
         brand_subtitle: "संदिग्ध मैसेज, SMS और लिंक की तुरंत ऑन-डिवाइस जाँच",
         trust_pill: "🛡️ 100% प्राइवेट • कोई डेटा आपके फ़ोन से बाहर नहीं जाता",
         input_label: "संदिग्ध मैसेज यहाँ डालें:",
+        image_btn: "स्क्रीनशॉट",
         paste_btn: "पेस्ट करें",
         clear_btn: "साफ़",
         placeholder: "यहाँ कोई भी संदिग्ध SMS, व्हाट्सएप मैसेज या लिंक पेस्ट करें... (हिंदी, हिंग्लिश या इंग्लिश)",
-        tip: "सुझाव: आप अपने कीबोर्ड के माइक से भी बोलकर टाइप कर सकते हैं।",
+        tip: "सुझाव: आप स्क्रीनशॉट अपलोड कर सकते हैं, ड्रैग कर सकते हैं या बोलकर टाइप कर सकते हैं।",
         check_btn: "मैसेज की जाँच करें (Check)",
         sample_title: "⚡ तुरंत टेस्ट करने के लिए उदाहरण चुनें:",
         reasons_title: "यह मैसेज क्यों संदिग्ध लगा?",
@@ -937,6 +1028,12 @@
         toast_paste_manual: "कृपया इनपुट बॉक्स में पेस्ट करें",
         toast_cleared: "साफ़ कर दिया गया",
         toast_empty_input: "कृपया जाँचने के लिए मैसेज लिखें या पेस्ट करें",
+        ocr_init: "इंजन तैयार किया जा रहा है...",
+        ocr_reading: "स्क्रीनशॉट से टेक्स्ट पढ़ा जा रहा है:",
+        ocr_privacy: "100% ऑन-डिवाइस स्कैन • कोई इमेज बाहर नहीं जाती",
+        toast_ocr_success: "📷 स्क्रीनशॉट से टेक्स्ट निकाल लिया गया!",
+        toast_ocr_empty: "इमेज में कोई पढ़ने योग्य टेक्स्ट नहीं मिला",
+        toast_ocr_err: "स्कैन विफल रहा। कृपया टेक्स्ट पेस्ट करें।",
         engine_not_loaded: "जाँच इंजन लोड नहीं हो सका। कृपया पेज रीफ़्रेश करें।",
         score_label: "स्कोर",
         badge_scam: "ठगी का ख़तरा!",
@@ -983,10 +1080,11 @@
         brand_subtitle: "Instant, on-device safety check for suspicious SMS, WhatsApp & links",
         trust_pill: "🛡️ 100% Private • No data ever leaves your device",
         input_label: "Paste or enter suspicious message:",
+        image_btn: "Screenshot",
         paste_btn: "Paste",
         clear_btn: "Clear",
         placeholder: "Paste any suspicious SMS, WhatsApp message, or link here... (English, Hindi, or Hinglish)",
-        tip: "Tip: You can also use your keyboard's microphone for voice typing.",
+        tip: "Tip: You can upload screenshots, drag-and-drop, or use your microphone for voice typing.",
         check_btn: "Check Message Safety",
         sample_title: "⚡ Tap a real-world example to test instantly:",
         reasons_title: "Why this looks suspicious (Red Flags):",
@@ -1002,6 +1100,12 @@
         toast_paste_manual: "Please paste into the input box",
         toast_cleared: "Cleared",
         toast_empty_input: "Please enter or paste a message to analyze",
+        ocr_init: "Initializing on-device OCR...",
+        ocr_reading: "Reading text from image:",
+        ocr_privacy: "100% on-device scan • Image never leaves your device",
+        toast_ocr_success: "📷 Text extracted from image!",
+        toast_ocr_empty: "No readable text found in image",
+        toast_ocr_err: "Scan failed. Please paste text directly.",
         engine_not_loaded: "Detection engine could not load. Please refresh the page.",
         score_label: "Score",
         badge_scam: "High Scam Risk!",
@@ -1058,6 +1162,9 @@
     const trustPill = document.getElementById('trust-pill');
 
     const inputLabelText = document.getElementById('input-label-text');
+    const imageBtn = document.getElementById('image-btn');
+    const imageBtnText = document.getElementById('image-btn-text');
+    const imageFileInput = document.getElementById('image-file-input');
     const pasteBtnText = document.getElementById('paste-btn-text');
     const clearBtnText = document.getElementById('clear-btn-text');
     const messageInput = document.getElementById('message-input');
@@ -1065,6 +1172,12 @@
     const checkBtnText = document.getElementById('check-btn-text');
     const sampleTitleText = document.getElementById('sample-title-text');
     const chipsContainer = document.getElementById('chips-container');
+    const mainCard = document.querySelector('.card');
+
+    const ocrStatusBox = document.getElementById('ocr-status-box');
+    const ocrStatusTitle = document.getElementById('ocr-status-title');
+    const ocrStatusSub = document.getElementById('ocr-status-sub');
+    const ocrBarFill = document.getElementById('ocr-bar-fill');
 
     const pasteBtn = document.getElementById('paste-btn');
     const clearBtn = document.getElementById('clear-btn');
@@ -1139,12 +1252,14 @@
       trustPill.textContent = t.trust_pill;
 
       inputLabelText.textContent = t.input_label;
+      imageBtnText.textContent = t.image_btn;
       pasteBtnText.textContent = t.paste_btn;
       clearBtnText.textContent = t.clear_btn;
       messageInput.setAttribute('placeholder', t.placeholder);
       inputTipText.textContent = t.tip;
       checkBtnText.textContent = t.check_btn;
       sampleTitleText.textContent = t.sample_title;
+      ocrStatusSub.textContent = t.ocr_privacy;
 
       reasonsTitleText.textContent = t.reasons_title;
       stepsTitleText.textContent = t.steps_title;
@@ -1184,6 +1299,118 @@
     // Toggle button event listeners
     langBtnHi.addEventListener('click', () => setLanguage('hi'));
     langBtnEn.addEventListener('click', () => setLanguage('en'));
+
+    // Lazy load Tesseract.js only on-demand
+    let tesseractLoadingPromise = null;
+    function loadTesseract() {
+      if (window.Tesseract) return Promise.resolve(window.Tesseract);
+      if (tesseractLoadingPromise) return tesseractLoadingPromise;
+      tesseractLoadingPromise = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        s.onload = () => resolve(window.Tesseract);
+        s.onerror = () => {
+          tesseractLoadingPromise = null;
+          reject(new Error('Failed to load OCR library'));
+        };
+        document.head.appendChild(s);
+      });
+      return tesseractLoadingPromise;
+    }
+
+    // On-Device Image OCR Scanner
+    async function processImage(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const t = I18N[currentLang];
+
+      ocrStatusBox.style.display = 'flex';
+      ocrBarFill.style.width = '15%';
+      ocrStatusTitle.textContent = t.ocr_init;
+      ocrStatusSub.textContent = t.ocr_privacy;
+
+      try {
+        await loadTesseract();
+        ocrBarFill.style.width = '35%';
+
+        const ret = await Tesseract.recognize(file, 'eng+hin', {
+          logger: m => {
+            if (m.status === 'recognizing text' && m.progress != null) {
+              const pct = Math.round(m.progress * 100);
+              ocrBarFill.style.width = `${Math.min(96, 35 + pct * 0.6)}%`;
+              ocrStatusTitle.textContent = `${t.ocr_reading} ${pct}%`;
+            }
+          }
+        });
+
+        ocrBarFill.style.width = '100%';
+        setTimeout(() => {
+          ocrStatusBox.style.display = 'none';
+        }, 350);
+
+        const extracted = (ret && ret.data && ret.data.text) ? ret.data.text.trim() : '';
+        if (extracted) {
+          messageInput.value = extracted;
+          showToast(t.toast_ocr_success);
+          runAnalysis();
+        } else {
+          showToast(t.toast_ocr_empty);
+        }
+      } catch (err) {
+        console.error('OCR Error:', err);
+        ocrStatusBox.style.display = 'none';
+        showToast(t.toast_ocr_err);
+      } finally {
+        imageFileInput.value = '';
+      }
+    }
+
+    imageBtn.addEventListener('click', () => {
+      imageFileInput.click();
+    });
+
+    imageFileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) processImage(file);
+    });
+
+    // Drag and Drop Image Support
+    ['dragenter', 'dragover'].forEach(eventName => {
+      mainCard.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        mainCard.classList.add('drag-over');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      mainCard.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        mainCard.classList.remove('drag-over');
+      });
+    });
+
+    mainCard.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files && dt.files[0] && dt.files[0].type.startsWith('image/')) {
+        processImage(dt.files[0]);
+      }
+    });
+
+    // Clipboard Paste Image Support (Ctrl+V)
+    window.addEventListener('paste', (e) => {
+      const items = e.clipboardData && e.clipboardData.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith('image/')) {
+          const file = items[i].getAsFile();
+          if (file) {
+            processImage(file);
+            break;
+          }
+        }
+      }
+    });
 
     // Sample chip click handlers
     document.querySelectorAll('.chip').forEach(chip => {

@@ -93,9 +93,8 @@ r.debug          // scores per type, for developers
 
 - New or reworded scams outside known indicators may slip through; rule-based architectures are conservative by design.
 - Dialects (Awadhi, Bhojpuri) are partially covered via common phonetics, but local vocabulary is expanding.
-- Screenshots and call audio are **not directly parsed** (no server-side OCR or heavy vision models). Users paste or type the text instead, keeping the application 100% lightweight and on-device.
+- Screenshots and images are parsed **100% on-device** via lazy-loaded WebAssembly OCR (Tesseract.js). No images are ever sent to an external server. Call audio is not recorded or parsed, keeping the application lightweight, battery-friendly, and private.
 - It is a **first-check helper, not an official guarantee.** It directly routes users to 1930, cybercrime.gov.in, and Sanchar Saathi's Chakshu portal.
-- It is a **first-check helper, not a guarantee.** It does not replace 1930, cybercrime.gov.in or Sanchar Saathi's Chakshu.
 
 ---
 

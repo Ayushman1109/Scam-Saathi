@@ -8,11 +8,12 @@
 
 ## 1. System Overview
 
-**Scam Saathi** is a privacy-first, on-device cyber fraud detection engine and web application. It allows first-time smartphone users and vulnerable citizens in rural/semi-urban India (specifically Uttar Pradesh) to evaluate suspicious text messages (SMS, WhatsApp forwards, links) in Hindi, Hinglish, and English without requiring any backend server, AI API key, or data transmission over the internet.
+**Scam Saathi** is a privacy-first, on-device cyber fraud detection engine and web application. It allows first-time smartphone users and vulnerable citizens in rural/semi-urban India (specifically Uttar Pradesh) to evaluate suspicious text messages (SMS, WhatsApp forwards, links, or uploaded screenshots) in Hindi, Hinglish, and English without requiring any backend server, AI API key, or data transmission over the internet.
 
 ```mermaid
 flowchart TD
-    A[Suspicious Text Message\nHindi / Hinglish / English] --> B[Text Normalization Pipeline]
+    A1[Suspicious Text / SMS / Link] --> B[Text Normalization Pipeline]
+    A2[Screenshot / Photo Upload\nor Clipboard Paste] -->|On-Device Tesseract.js WASM| A1
     B --> C[Tokenization & Unicode NFC Normalization]
     C --> D[Safe Phrase Masking\ne.g., 'Never share OTP', 'Delivery OTP']
     D --> E[11 Category Scam Matcher\nFuzzy Levenshtein + Max Gap = 5]
