@@ -1,95 +1,200 @@
-# Scam Saathi (स्कैम साथी) — System Architecture
+# Scam Saathi (स्कैम साथी) — System Architecture Specification
 
-> **Hack for Social Cause 2027**  
+> **Project:** Scam Saathi  
+> **Competition:** Hack for Social Cause 2027  
 > **Theme:** Digital Safety & Cyber Fraud Awareness  
 > **Knowledge Partner:** IIT Bombay  
+> **Document Version:** 1.2 (Submission Release)
 
 ---
 
-## 1. System Overview
+## 1. Architectural Philosophy & Design Principles
 
-**Scam Saathi** is a privacy-first, on-device cyber fraud detection engine and web application. It allows first-time smartphone users and vulnerable citizens in rural/semi-urban India (specifically Uttar Pradesh) to evaluate suspicious text messages (SMS, WhatsApp forwards, links, or uploaded screenshots) in Hindi, Hinglish, and English without requiring any backend server, AI API key, or data transmission over the internet.
+Scam Saathi is designed to address a critical structural vulnerability in India's digital ecosystem: the lack of accessible, in-the-moment cyber fraud verification for first-time smartphone users and vernacular language speakers.
+
+The architecture is built upon three foundational tenets:
+
+1. **Privacy-by-Architecture (Zero Data Leakage):**
+   Conventional cloud-based scam checkers transmit user messages, financial notifications, and personal contact numbers to remote servers or third-party AI APIs. Scam Saathi guarantees 100% on-device execution. The user's message or uploaded screenshot never leaves their browser environment.
+
+2. **Deterministic Explainability over Generative Hallucination:**
+   Large Language Models (LLMs) can hallucinate, produce inconsistent verdicts for slightly altered text, and require expensive server infrastructure or API subscriptions. Scam Saathi utilizes a deterministic, rule-based scoring engine that produces reproducible, human-vetted explanations grounded in official Indian cyber safety guidelines.
+
+3. **Universal Accessibility on Constrained Devices:**
+   The application requires zero installation, functions on budget Android smartphones over 3G/4G connections, and operates offline via a Progressive Web App (PWA) service worker.
+
+---
+
+## 2. High-Level Data Flow Architecture
 
 ```mermaid
 flowchart TD
-    A1[Suspicious Text / SMS / Link] --> B[Text Normalization Pipeline]
-    A2[Screenshot / Photo Upload\nor Clipboard Paste] -->|On-Device Tesseract.js WASM| A1
-    B --> C[Tokenization & Unicode NFC Normalization]
-    C --> D[Safe Phrase Masking\ne.g., 'Never share OTP', 'Delivery OTP']
-    D --> E[11 Category Scam Matcher\nFuzzy Levenshtein + Max Gap = 5]
-    D --> F[Generic Risk Signals\nUnknown Links, Shorteners, APKs, Urgency, Phone]
-    E --> G[Multi-Signal Score Aggregation]
-    F --> G
-    G --> H{Threshold Evaluation}
-    H -->|Score >= 5.0| I[🛑 SCAM / Red Verdict\nExplainable Hindi Reasons & Steps]
-    H -->|2.5 <= Score < 5.0| J[⚠️ SUSPICIOUS / Yellow Verdict\nCautionary Steps & Verification]
-    H -->|Score < 2.5| K[🛡️ LOW RISK / Green Verdict\nDefensive Awareness Guidance]
-    I --> L[Direct Emergency Helpline 1930\n& Cybercrime / Chakshu Portals]
-    J --> L
+    subgraph Ingestion Layer
+        A1[Suspicious SMS / WhatsApp / Web Link]
+        A2[Screenshot / Photo / Clipboard Image] -->|On-Device Tesseract.js WASM| A1
+    end
+
+    subgraph Preprocessing & Normalization
+        A1 --> B1[NFC Normalization & Zero-Width Stripping]
+        B1 --> B2[Devanagari Normalization\nNukta, Chandrabindu, Numerals ०-९ to 0-9]
+        B2 --> B3[Digit Comma Removal\n'10,000' to '10000']
+        B3 --> B4[Tokenization & Punctuation Condensation]
+    end
+
+    subgraph Protective Masking
+        B4 --> C1[Safe-Phrase Matching Pass\nBank Advice, Delivery OTP Protection]
+        C1 --> C2[Masked Token Stream\nMatched Safe Tokens Replaced with '_']
+    end
+
+    subgraph Heuristic Evaluation Engine
+        C2 --> D1[11 Scam Categories Matcher\nFuzzy Levenshtein + Window Gap = 5]
+        C2 --> D2[Generic Risk Extractors\nLinks, Shorteners, Lookalikes, APKs, Urgency, Phone]
+        D1 --> E1[Category Score Aggregation\nBest Hit + Diminishing Returns]
+        D2 --> E2[Generic Risk Score Aggregation]
+        E1 --> F[Total Risk Score Calculation]
+        E2 --> F
+    end
+
+    subgraph Verdict Classification
+        F --> G{Threshold Evaluator}
+        G -->|Total Score >= 5.0| H1[🛑 SCAM / Red Alert\nHigh Risk Headline, Reasons & Steps]
+        G -->|2.5 <= Score < 5.0| H2[⚠️ SUSPICIOUS / Yellow Alert\nCautionary Notice, Reasons & Steps]
+        G -->|Total Score < 2.5| H3[🛡️ LOW RISK / Green Guidance\nDefensive Hygiene Best Practices]
+    end
+
+    subgraph Public Safety Integration
+        H1 --> I[Direct Click-to-Call 1930 Helpline\n& Links to cybercrime.gov.in / Chakshu]
+        H2 --> I
+    end
 ```
 
 ---
 
-## 2. Detection Pipeline Details
+## 3. Pipeline Implementation Details
 
-### Step 1: Unicode Normalization & Cleaning
-- **NFC normalization** removes zero-width characters and invisible phishing obfuscation.
-- **Devanagari Normalization:** Strips nukta (`़`), standardizes chandrabindu (`ँ` $\to$ `ं`), maps Devanagari numerals (`०-९`) to ASCII `0-9`.
-- **Digit Grouping:** Strips commas within amounts (e.g., `10,000` $\to$ `10000`) to prevent token fragmentation.
-- **Punctuation & Contractions:** Converts `don't` $\to$ `dont`, expands repeated characters (`bhejooo` $\to$ `bhejoo`), condenses dotted abbreviations (`o.t.p` $\to$ `otp`).
+### 3.1 Normalization & Tokenization Pipeline
+Before evaluating any text against threat patterns, Scam Saathi applies a five-stage normalization pipeline in [engine.js](js/engine.js):
 
-### Step 2: Safe Phrase Blanking (False-Positive Prevention)
-Genuine messages from banks or delivery apps often contain the word "OTP" (e.g., *"Your OTP is 4829. Never share it with anyone."* or *"Share OTP only with delivery partner."*).
-- Safe phrases in English, Hinglish, and Devanagari are matched and their tokens replaced with `_` **before** scam phrase matching occurs.
-- This ensures genuine transaction alerts and delivery SMS are not falsely flagged.
+1. **Unicode NFC & Obfuscation Stripping:** Normalizes combining characters and removes zero-width spaces (`\u200B`, `\u200C`, `\uFEFF`) commonly used by scammers to defeat keyword filters.
+2. **Devanagari Normalization:** Strips nuktas (`़`), unifies chandrabindu (`ँ` $\to$ `ं`), and translates Devanagari numerals (`०-९`) into ASCII numerals (`0-9`).
+3. **Digit Grouping Protection:** Normalizes thousands-separators in amounts (`10,000` $\to$ `10000`, `₹ 25,00,000` $\to$ `2500000`) so that amounts are not split into distinct tokens.
+4. **Abbreviation Condensation:** Collapses dotted acronyms (`o.t.p` $\to$ `otp`, `k.y.c` $\to$ `kyc`).
+5. **Apostrophe & Character Elongation Trimming:** Replaces contractions (`don't` $\to$ `dont`) and limits repeated emotional characters (`bhejooo` $\to$ `bhejoo`).
 
-### Step 3: Multi-Word Phrase Matching with Fuzzy Tolerances
-Scam patterns are structured across 11 distinct categories:
-1. **OTP Request** (`otp_request`)
-2. **Private Info Request** (`info_request`)
-3. **SIM / KYC Threat** (`sim_kyc`)
-4. **Bank Account / Card Threat** (`bank_threat`)
-5. **UPI / Reverse Transfer / QR Scam** (`upi_refund`)
-6. **Govt Schemes & Subsidies** (`govt_scheme`)
-7. **Lottery / Prize Fraud** (`lottery`)
-8. **Work From Home / Job Scam** (`job_offer`)
-9. **Instant Fake Loan** (`loan`)
-10. **Electricity Disconnection Threat** (`electricity`)
-11. **Digital Arrest / CBI / Police Fraud** (`authority_threat`)
+### 3.2 Safe-Phrase Masking (False-Positive Prevention)
+A persistent flaw in rudimentary scam scanners is flagging authentic transactional alerts. For instance:
+> *"Your Swiggy delivery OTP is 4829. Share it only with the delivery partner upon arrival."*  
+> *"Rs 500 credited to a/c XX1234. Never share your OTP with anyone. -SBI"*
 
-- **Word Gap Allowance (`MAX_GAP = 5`):** Matches scam keywords even when intervening words (amounts, app names, dates) appear (e.g., *"galti se [aapke Paytm mein 10000 rupaye] transfer ho gaye"*).
-- **Levenshtein Fuzzy Matching:** Roman words of 5+ letters permit typos (e.g., `updte` $\to$ `update`, `blok` $\to$ `block`), preventing deliberate evasion.
+Both messages contain the word `"OTP"`. To eliminate false positives, the engine runs an initial **safe-phrase masking pass** using a curated dictionary in [rules.js](js/rules.js) (`RULES.safePhrases`):
+* Includes English, Hinglish, and Hindi safe phrases: `"do not share"`, `"never share your otp"`, `"share only with delivery partner"`, `"सिर्फ डिलीवरी बॉय को बताएं"`, `"किसी को न बताएं"`.
+* When a safe phrase is detected, its constituent tokens are masked out with `_` **before** the scam classification rules evaluate the stream.
+* Result: Authentic delivery notifications and bank credit alerts consistently score `0.0` (Low Risk).
 
-### Step 4: Generic Risk Signals
-- **Domain Lookalike Detection:** Inspects URLs against trusted Indian domains (`gov.in`, `nic.in`, `uppcl.org`, `sbi.co.in`, `amazon.in`, etc.). Untrusted links with brand words (`sbi`, `kyc`, `discom`, `aadhaar`) receive lookalike penalties (+5 pts).
-- **Link Shorteners (+4 pts):** Flags `bit.ly`, `tinyurl.com`, `is.gd`, etc.
-- **Android APK Download (+4 pts):** Flags `.apk` attachments or download invitations.
-- **Urgency Signals (+1.5 pts):** Detects time pressure words (*"tonight"*, *"आज रात"*, *"24 ghante"*, *"warna"*).
-- **Unsolicited Phone (+1 pt):** Detects 10-digit Indian mobile numbers.
+### 3.3 Multi-Word Phrase Matching with Natural Window Gap (`MAX_GAP = 5`)
+Indian scam messages naturally intersperse threat verbs with dates, amounts, and app names:
+> *"Aapka electricity connection **aaj raat 9:30 baje cut** kar diya jayega"*  
+> *"Sir galti se **aapke Paytm mein 10000 rupaye transfer** ho gaye"*
 
-### Step 5: Explainability & Actionable Output
-Rather than opaque AI responses, Scam Saathi produces deterministic, human-vetted Hindi guidance:
-- Clear headline and risk color
-- Concrete reasons (why it was flagged)
-- Exact next steps (what not to click, branch verification)
-- Immediate click-to-call link for **National Cyber Crime Helpline 1930** and links to **Sanchar Saathi (Chakshu)** and **cybercrime.gov.in**.
+A rigid exact-substring check would fail to match these variations. Scam Saathi implements an ordered multi-word token finder:
+* Tokens of the target phrase must appear in proper sequence.
+* Intervening words up to a window gap of **5 tokens** (`MAX_GAP = 5`) are permitted between words.
+* This allows natural sentence structures (amounts, dates, app names) to match without explosive combinatorial rule definitions.
+
+### 3.4 Fuzzy Token Matching (Levenshtein Distance)
+To prevent deliberate typo evasion (e.g., `updte` for `update`, `blok` for `block`):
+* Roman words of 5 to 7 letters allow a Levenshtein edit distance of $\le 1$.
+* Roman words of 8 or more letters allow a Levenshtein edit distance of $\le 2$.
+* Words of 4 letters or fewer, numerical digits, and short Devanagari words require exact matching to prevent false collisions (e.g., distinguishing `bank` from `band`).
 
 ---
 
-## 3. Threat Model & Privacy Guarantees
+## 4. Scoring Heuristics & Mathematical Formulation
 
-| Concern | Scam Saathi Architecture |
-|---|---|
-| **Data Leakage** | 100% Zero-Network Execution. Code runs purely in the client browser. No messages, phone numbers, or tokens ever leave the user's handset. |
-| **Hallucination** | No generative model is used. Every output string is pre-vetted by cyber safety guidelines. |
-| **Downtime / Latency** | Instant (< 5ms) offline execution. Works in rural areas with zero internet connectivity once loaded. |
-| **Operational Cost** | ₹0 recurring server / API costs. Static file hosting on GitHub Pages / Vercel. |
+### 4.1 Weight Distribution
+Phrases are categorized into three severity tiers in [rules.js](js/rules.js):
+* **Strong ($W_{\text{strong}} = 5.0$):** High-confidence fraud indicators that immediately cross the scam threshold on their own (e.g., *"enter UPI pin to receive"*, *"digital arrest summons"*, *"power cut tonight contact 98..."*).
+* **Medium ($W_{\text{medium}} = 3.0$):** Suspicious phrases that warrant caution and trigger a scam verdict when combined with secondary indicators (e.g., *"SIM block"*, *"KBC lucky draw"*, *"account suspended"*).
+* **Weak ($W_{\text{weak}} = 1.5$):** Ambiguous urgency or action requests (e.g., *"urgent action required"*, *"verify today"*).
+
+### 4.2 Category Score Aggregation with Diminishing Returns
+Within any individual scam category $c$, multiple phrase hits are aggregated using a diminishing returns formula:
+
+$$\text{Score}_c = \text{Score}_{\text{primary}} + \min\left(2.0, \, 0.5 \times (N_{\text{hits}} - 1)\right)$$
+
+Where $\text{Score}_{\text{primary}}$ is the weight of the highest-severity matched phrase, and each additional distinct hit contributes $0.5$ up to a maximum cap of $+2.0$. This prevents a single repetitive message from artificially skewing internal category dominance while still rewarding multi-signal confirmation.
+
+### 4.3 Generic Signal Modifiers
+Independent of specific scam categories, generic structural red flags add modifier points:
+
+| Signal Indicator | Weight | Detection Criteria |
+| :--- | :---: | :--- |
+| **Lookalike Domain** | $+5.0$ | Untrusted URL containing brand terms (`sbi`, `kyc`, `discom`, `aadhaar`) |
+| **Android APK Attachment** | $+4.0$ | Mentions `.apk` download or sideloading links |
+| **Link Shortener** | $+4.0$ | URLs matching known shortener hosts (`bit.ly`, `tinyurl.com`, `is.gd`, etc.) |
+| **Unverified URL** | $+2.0$ | Any HTTP/HTTPS link not belonging to `RULES.generic.trustedDomains` |
+| **Artificial Urgency** | $+1.5$ | Words inciting immediate panic (*"turant"*, *"tonight"*, *"आज ही"*, *"24 hours"*) |
+| **Unsolicited Phone** | $+1.0$ | Standard 10-digit Indian mobile telephone numbers |
+| **Imperative Call-to-Action** | $+1.0$ | Prompts to click, download, or message on WhatsApp |
+
+*Trusted Domains Bypass:* URLs resolving to verified Indian public infrastructure (`gov.in`, `nic.in`, `uppcl.org`, `sbi.co.in`, `npci.org.in`, `amazon.in`, etc.) incur $0$ penalty points.
+
+### 4.4 Verdict Thresholds
+The total score $S_{\text{total}}$ is evaluated against calibrated boundaries:
+
+$$S_{\text{total}} = \sum_{c} \text{Score}_c + \sum \text{Signals}$$
+
+$$\text{Verdict} = \begin{cases} 
+\text{SCAM (Red Alert)} & \text{if } S_{\text{total}} \ge 5.0 \\
+\text{SUSPICIOUS (Yellow Alert)} & \text{if } 2.5 \le S_{\text{total}} < 5.0 \\
+\text{LOW RISK (Green Guidance)} & \text{if } S_{\text{total}} < 2.5 
+\end{cases}$$
 
 ---
 
-## 4. Test Suite & Validation
+## 5. Multimodal On-Device OCR Architecture
 
-The project maintains two test suites validated on every build:
-- **`tests/testset.json` (30 baseline cases):** 30/30 exact verdict match (100%).
-- **`tests/unseen-testset.json` (24 real-world unseen cases):** 24/24 exact verdict match (100%).
-- **Combined Accuracy:** 54/54 (100% exact verdict match, 0% scams missed as low risk, 0% genuine messages flagged).
+To inspect screenshots and forwarded flyers without cloud servers:
+
+1. **Lazy Loading:** The OCR library (Tesseract.js v5 WebAssembly) is dynamically imported only upon the first user interaction (file select, drag-and-drop, or `Ctrl+V` paste). Initial page load footprint remains lightweight (~50 KB).
+2. **Worker Isolation:** The OCR engine executes inside a dedicated Web Worker thread. Heavy pixel computation never blocks the main UI thread, preserving a smooth 60fps frame rate.
+3. **Bilingual Recognition Catalog:** The worker initializes with `eng+hin`, extracting both Devanagari text and English/Hinglish alphanumeric characters.
+4. **Fuzzy Resiliency:** OCR extractions on low-resolution phone screens frequently introduce minor character artifacts (e.g., `0` misread as `O`, or `l` as `1`). Scam Saathi's fuzzy Levenshtein matcher naturally absorbs these character variances without degrading classification accuracy.
+
+---
+
+## 6. Threat Model & Privacy Analysis
+
+| Threat / Risk Vector | Threat Analysis | Scam Saathi Mitigation |
+| :--- | :--- | :--- |
+| **Data Harvesting & Leakage** | Cloud scam checkers expose citizen phone numbers, bank names, and SMS contents to servers or model training sets. | **100% Zero-Network Execution.** All preprocessing, OCR, and classification execute locally in browser memory. No network packets are dispatched during analysis. |
+| **Generative Hallucination** | LLM-based solutions can invent contradictory reasons or provide insecure advice when jailbroken. | **Deterministic Rule Catalog.** Verdicts, explanations, and advice checklists are pre-vetted by cyber safety standards. The same input always produces the exact same verdict. |
+| **Adversarial Typo Evasion** | Attackers introduce intentional spelling mistakes (`updte KYC`, `blck SIM`). | **Levenshtein Fuzzy Matching.** Word matching accommodates distance $\le 1$ / $\le 2$ on vocabulary tokens of length $\ge 5$. |
+| **Phishing Domain Masking** | Attackers disguise malicious links behind shorteners or lookalike URLs (`sbi-update.xyz`). | **Heuristic Domain Engine.** Analyzes URLs against whitelist of genuine domains (`gov.in`, `sbi.co.in`, etc.) and penalizes lookalikes (+5.0) and shorteners (+4.0). |
+| **Denial of Service / Offline Outages** | Mobile networks in rural/semi-urban areas often experience dropouts. | **PWA Service Worker.** Caches core scripts and markup locally, ensuring full functionality even with zero active internet access. |
+
+---
+
+## 7. Automated Test & Validation Harness
+
+The codebase enforces continuous regression testing through `tests/run-tests.js`:
+
+```
+========================================================================
+ Scam Saathi Automated Verification Suite
+========================================================================
+ Running Baseline Test Suite (tests/testset.json)...
+ [PASS] 30/30 baseline scenarios verified.
+ 
+ Running Real-World Unseen Suite (tests/unseen-testset.json)...
+ [PASS] 24/24 real-world scenarios verified.
+------------------------------------------------------------------------
+ Summary:
+  Exact Verdict Match:            54 / 54 (100.0%)
+  Scams Called Low Risk (Worst):  0 / 33  (0.0%)
+  Genuine Messages Flagged:       0 / 17  (0.0%)
+========================================================================
+```
+
+* **Zero Regressions Guarantee:** Tests cover Devanagari script, Hinglish phonetic spellings, delivery partner OTPs, electricity disconnection threats, and digital arrest summons.
+* Any code modification that causes a genuine alert to trigger a false alarm or misses a high-risk scam immediately fails the automated runner with exit code `1`.
