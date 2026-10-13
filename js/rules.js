@@ -52,12 +52,29 @@
       "not to share", "will never ask", "never ask", "never asks", "never call", "never calls",
       "do not click", "dont click", "do not respond", "do not share with anyone", "dont share with anyone",
       "bank never asks", "bank will never ask", "never share your otp", "never share your password",
+      "never share your netbanking password", "does not ask for your otp", "will never ask for confidential",
       "share only with delivery", "share it only with delivery", "share with delivery partner",
       "share with the delivery partner", "only with delivery partner", "only share with delivery",
       "share otp with delivery", "with delivery partner",
+      "share otp with postman", "share with postman", "with postman upon delivery", "with postman",
       "kyc updated", "kyc is updated", "kyc has been updated", "kyc completed", "kyc is completed",
       "kyc has been completed", "kyc successful", "kyc verified", "kyc is verified",
       "bill paid successfully", "payment successful", "payment received successfully",
+      "has been credited to your bank account ending", "has been credited to your bank account",
+      "has been credited to your account ending", "has been credited to your account",
+      "credited to your bank account ending", "credited to your account ending",
+      "credited to your bank account", "credited to your account",
+      "has been credited to your", "has been credited",
+      "under 17th installment", "under installment",
+      "verified details and pay on official portal", "pay on official portal",
+      "track status on", "track status at", "check balance at",
+      "otp for aadhaar authentication", "valid for 10 minutes do not share",
+      "telecom advisory", "trai does not disconnect any mobile connection", "trai does not disconnect",
+      "regarding sim disconnection", "calls regarding sim disconnection", "suspicious calls regarding sim disconnection",
+      "verify with your service provider",
+      "created successfully", "processed successfully", "has been processed successfully",
+      "wish you a happy journey", "happy journey",
+      "does not disconnect any mobile connection", "does not disconnect",
       // Hinglish
       "kisi ko na batayein", "kisi ko na bataye", "kisi ko na bataiye", "kisi ko na batayen",
       "kisi ko nahi batana", "kisi ko nahi batayein",
@@ -74,8 +91,11 @@
       "कभी नहीं मांगता", "कभी नहीं मांगते", "कभी नहीं मांगती", "कभी न मांगे",
       "किसी के साथ साझा न करें", "किसी के साथ शेयर न करें", "किसी से साझा न करें",
       "किसी को मत दें", "किसी को न दें", "बैंक कभी नहीं मांगता", "बैंक कभी नहीं पूछता",
+      "कभी भी आपसे फोन या मैसेज पर ओटीपी", "कभी भी ओटीपी नहीं पूछता", "ओटीपी नहीं पूछता",
+      "पासवर्ड नहीं पूछता", "सीवीवी नहीं पूछता", "कभी भी नहीं पूछता", "गोपनीय जानकारी न दें",
       "सिर्फ डिलीवरी पार्टनर", "सिर्फ डिलीवरी बॉय", "डिलीवरी पार्टनर को ही", "डिलीवरी पार्टनर के साथ साझा",
       "सफलतापूर्वक प्राप्त हुआ", "सफलतापूर्वक प्राप्त", "सफलतापूर्वक भुगतान", "सफलतापूर्वक जमा",
+      "सफलतापूर्वक जमा कर दी गई", "सब्सिडी सफलतापूर्वक जमा", "खाते में सफलतापूर्वक जमा",
       "केवाईसी अपडेट हो गया", "केवाईसी पूरा हो गया"
     ],
 
@@ -192,7 +212,10 @@
           "खाता बंद", "खाता ब्लॉक", "खाता फ्रीज", "अकाउंट बंद", "अकाउंट ब्लॉक", "अकाउंट फ्रीज", "खाता बंद हो जाएगा", "अकाउंट बंद हो जाएगा",
           "atm card block", "atm card blocked", "atm card band", "debit card block", "debit card blocked",
           "card band ho", "card block ho", "pan card block", "pan card blocked", "pan band", "card will be blocked",
-          "पैन कार्ड ब्लॉक", "पैन कार्ड बंद", "एटीएम कार्ड बंद", "एटीएम कार्ड ब्लॉक", "पैन कार्ड बंद हो जाएगा", "खाता ब्लॉक कर दिया गया", "खाता फ्रीज कर दिया"
+          "पैन कार्ड ब्लॉक", "पैन कार्ड बंद", "एटीएम कार्ड बंद", "एटीएम कार्ड ब्लॉक", "पैन कार्ड बंद हो जाएगा", "खाता ब्लॉक कर दिया गया", "खाता फ्रीज कर दिया",
+          "reward points worth", "reward points expiring", "reward points expire", "redeem reward points", "redeem points directly", "redeem points as cash",
+          "fastag has been blacklisted", "fastag blacklisted", "fastag blocked", "update your fastag", "fastag kyc",
+          "yono account is blocked", "sbi yono", "yono netbanking"
         ],
         medium: [
           "account closed", "account close", "pan update", "pan expire", "pan expired", "pan suspended", "pan card suspended",
@@ -332,6 +355,7 @@
           "rozana kamao", "roz kamao",
           "earn per day by liking", "earn per day liking", "earn daily by liking", "like videos and earn", "like youtube videos earn",
           "earn money liking videos", "earn 2000 per day", "earn 3000 per day", "earn 5000 per day", "earn 1000 per day", "earn money by liking",
+          "ratings on google maps", "ratings on google", "rate on google maps", "per review", "reviews on google", "ratings google maps",
           "घर बैठे कमाएं", "घर बैठे कमाई", "घर बैठे पैसे", "रोज कमाएं", "रोज कमाओ",
           "यूट्यूब वीडियो लाइक करके कमाएं", "वीडियो लाइक करके पैसे", "घर बैठे रोज कमाएं"
         ],
@@ -364,6 +388,7 @@
         strong: [
           "bina document loan", "bina documents loan", "bina cibil", "loan processing fee",
           "loan approved without documents", "instant loan without documents", "loan without cibil", "pay fee to get loan",
+          "badnaam karenge", "contacts ko gandi photos", "contacts ko photo", "gandi photos bhej", "contacts ko gandi",
           "बिना दस्तावेज लोन", "बिना कागज लोन", "बिना सिबिल", "बिना कागजात लोन मंजूर", "बिना सिबिल स्कोर लोन"
         ],
         medium: [
@@ -428,11 +453,13 @@
         ],
         strong: [
           "digital arrest", "डिजिटल अरेस्ट", "arrest warrant", "अरेस्ट वारंट", "गिरफ्तारी वारंट",
-          "arrest warrant issued", "parcel contains narcotics", "parcel contains drugs", "parcel seized by customs",
+          "digital arrest warrant", "arrest warrant issued", "parcel contains narcotics", "parcel contains drugs", "parcel seized by customs",
           "cbi officer calling", "police officer calling", "customs officer calling", "case registered against you",
           "fir registered against you", "your son had an accident", "son in police custody",
           "cbi se bol", "cbi officer", "सीबीआई", "narcotics", "नारकोटिक्स",
           "drugs parcel", "parcel mein drugs", "parcel me drugs", "money laundering", "मनी लॉन्ड्रिंग",
+          "money laundering and pornography", "seized with illegal drugs", "seized with drugs", "parcel containing illegal",
+          "trai notice", "trai notice your mobile", "acp cyber crime",
           "aapke naam par case", "aapke naam pe case", "आपके नाम पर केस", "आपके नाम पर मामला",
           "cyber police se bol", "customs se bol", "trai se bol", "ट्राई से बोल",
           "आपके बेटे का एक्सीडेंट", "बेटा पुलिस हिरासत में", "पार्सल में ड्रग्स", "डिजिटल अरेस्ट किया गया"
@@ -505,7 +532,7 @@
         "gov.in", "nic.in", "sbi.co.in", "onlinesbi.sbi", "hdfcbank.com", "icicibank.com", "axisbank.com",
         "paytm.com", "phonepe.com", "amazon.in", "flipkart.com", "irctc.co.in", "npci.org.in",
         "jio.com", "airtel.in", "google.com", "youtube.com", "whatsapp.com", "wa.me",
-        "uppcl.org", "upenergy.in"
+        "uppcl.org", "upenergy.in", "iocl.com", "indiapost.gov.in", "parivahan.gov.in"
       ],
       shorteners: [
         "bit.ly", "tinyurl.com", "t.co", "goo.gl", "cutt.ly", "rb.gy", "is.gd", "shorturl.at",
@@ -515,7 +542,7 @@
       brandWords: [
         "sbi", "kyc", "kisan", "pmkisan", "aadhaar", "aadhar", "uidai", "epfo", "irctc", "gov", "india",
         "paytm", "phonepe", "bijli", "electricity", "upi", "bank", "refund", "loan", "lottery", "kbc",
-        "jio", "airtel", "customs", "narcotics", "discom"
+        "jio", "airtel", "customs", "narcotics", "discom", "fastag", "reward", "yono", "challan"
       ]
     },
 

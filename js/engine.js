@@ -25,7 +25,17 @@
     s = s.replace(/(?<=\d),(?=\d)/g, "");                         // 10,000 -> 10000
     s = s.replace(/['’`]/g, "");                                  // don't -> dont
     s = s.replace(/\b(?:[a-z]\.){2,}[a-z]?\b/g, function (m) { return m.replace(/\./g, ""); }); // o.t.p -> otp
+    s = s.replace(/\b([a-z0-9])[.\-_/]([a-z0-9])[.\-_/]([a-z0-9])\b/gi, "$1$2$3"); // o-t-p, k-y-c -> otp, kyc
     s = s.replace(/([a-zऀ-ॿ])\1{2,}/g, "$1$1");              // bhejooo -> bhejoo
+    // Anti-evasion leetspeak deobfuscation for common scam keywords
+    s = s.replace(/\b[0o]tp\b/gi, "otp")
+         .replace(/\bp[1i]n\b/gi, "pin")
+         .replace(/\bs[1i]m\b/gi, "sim")
+         .replace(/\bk[y¥]c\b/gi, "kyc")
+         .replace(/\bc[1il]{1,2}ck\b/gi, "click")
+         .replace(/\bl[1i]nk\b/gi, "link")
+         .replace(/\bbl[0o]ck\b/gi, "block")
+         .replace(/\bd[0o]wnl[0o]ad\b/gi, "download");
     return s;
   }
 
@@ -82,7 +92,10 @@
   // Blank out "never share your OTP"-type phrases so they cannot trigger scam phrases.
   function maskSafe(tokens) {
     var t = tokens.slice();
-    RULES.safePhrases.forEach(function (p) {
+    var sorted = RULES.safePhrases.slice().sort(function (a, b) {
+      return phraseTokens(b).length - phraseTokens(a).length;
+    });
+    sorted.forEach(function (p) {
       var ptoks = phraseTokens(p), m;
       while ((m = findPhrase(t, ptoks, false, SAFE_GAP))) {
         for (var i = m.start; i <= m.end; i++) t[i] = "_";

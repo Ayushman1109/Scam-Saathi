@@ -73,23 +73,27 @@ flowchart TD
 ## 3. Pipeline Implementation Details
 
 ### 3.1 Normalization & Tokenization Pipeline
-Before evaluating any text against threat patterns, Scam Saathi applies a five-stage normalization pipeline in [engine.js](js/engine.js):
+Before evaluating any text against threat patterns, Scam Saathi applies a comprehensive seven-stage normalization pipeline in [engine.js](js/engine.js):
 
 1. **Unicode NFC & Obfuscation Stripping:** Normalizes combining characters and removes zero-width spaces (`\u200B`, `\u200C`, `\uFEFF`) commonly used by scammers to defeat keyword filters.
 2. **Devanagari Normalization:** Strips nuktas (`़`), unifies chandrabindu (`ँ` $\to$ `ं`), and translates Devanagari numerals (`०-९`) into ASCII numerals (`0-9`).
 3. **Digit Grouping Protection:** Normalizes thousands-separators in amounts (`10,000` $\to$ `10000`, `₹ 25,00,000` $\to$ `2500000`) so that amounts are not split into distinct tokens.
-4. **Abbreviation Condensation:** Collapses dotted acronyms (`o.t.p` $\to$ `otp`, `k.y.c` $\to$ `kyc`).
+4. **Delimited Acronym Condensation:** Collapses dotted, dashed, slashed, and underscored acronyms (`o.t.p`, `o-t-p` $\to$ `otp`, `k.y.c`, `k-y-c` $\to$ `kyc`, `u-p-i` $\to$ `upi`).
 5. **Apostrophe & Character Elongation Trimming:** Replaces contractions (`don't` $\to$ `dont`) and limits repeated emotional characters (`bhejooo` $\to$ `bhejoo`).
+6. **Anti-Evasion Leetspeak Deobfuscation:** Restores adversarial phonetic and number substitutions for high-risk scam triggers (`c1ick`, `cl1ck` $\to$ `click`, `0tp` $\to$ `otp`, `p1n` $\to$ `pin`, `s1m` $\to$ `sim`, `k¥c` $\to$ `kyc`, `bl0ck` $\to$ `block`, `d0wnl0ad` $\to$ `download`).
+7. **Unicode Token Segmentation:** Uses Unicode property escapes (`\p{L}\p{M}\p{N}`) to cleanly split multi-lingual text across Latin and Devanagari scripts.
 
 ### 3.2 Safe-Phrase Masking (False-Positive Prevention)
 A persistent flaw in rudimentary scam scanners is flagging authentic transactional alerts. For instance:
 > *"Your Swiggy delivery OTP is 4829. Share it only with the delivery partner upon arrival."*  
-> *"Rs 500 credited to a/c XX1234. Never share your OTP with anyone. -SBI"*
+> *"Rs 2000 has been credited to your bank account ending 4321 under 17th installment. -Govt of India (pmkisan.gov.in)"*  
+> *"Never share your OTP or NetBanking password with anyone. -SBI"*
 
-Both messages contain the word `"OTP"`. To eliminate false positives, the engine runs an initial **safe-phrase masking pass** using a curated dictionary in [rules.js](js/rules.js) (`RULES.safePhrases`):
-* Includes English, Hinglish, and Hindi safe phrases: `"do not share"`, `"never share your otp"`, `"share only with delivery partner"`, `"सिर्फ डिलीवरी बॉय को बताएं"`, `"किसी को न बताएं"`.
+All of these messages contain sensitive keywords like `"OTP"`, `"bank account"`, or scheme names. To eliminate false alarms, the engine runs an initial **safe-phrase masking pass** using a curated dictionary in [rules.js](js/rules.js) (`RULES.safePhrases`):
+* Includes English, Hinglish, and Hindi transactional and safety phrases: `"do not share"`, `"never share your otp"`, `"share only with delivery partner"`, `"share otp with postman upon delivery"`, `"has been credited to your bank account"`, `"सब्सिडी सफलतापूर्वक जमा कर दी गई"`, `"telecom advisory"`, `"trai does not disconnect"`.
+* **Length-Descending Precedence:** Safe phrases are sorted by token count descending before matching. This ensures longer, highly specific transactional clauses (such as `"has been credited to your bank account ending"`) are masked atomically before shorter subphrases can fragment them.
 * When a safe phrase is detected, its constituent tokens are masked out with `_` **before** the scam classification rules evaluate the stream.
-* Result: Authentic delivery notifications and bank credit alerts consistently score `0.0` (Low Risk).
+* Result: Authentic delivery notifications, government direct-benefit credits, and official bank advisories consistently score `0.0` or remain well below the suspicion threshold.
 
 ### 3.3 Multi-Word Phrase Matching with Natural Window Gap (`MAX_GAP = 5`)
 Indian scam messages naturally intersperse threat verbs with dates, amounts, and app names:
@@ -187,14 +191,14 @@ The codebase enforces continuous regression testing through `tests/run-tests.js`
  [PASS] 30/30 baseline scenarios verified.
  
  Running Real-World Unseen Suite (tests/unseen-testset.json)...
- [PASS] 24/24 real-world scenarios verified.
+ [PASS] 50/50 real-world scenarios verified.
 ------------------------------------------------------------------------
  Summary:
-  Exact Verdict Match:            54 / 54 (100.0%)
-  Scams Called Low Risk (Worst):  0 / 33  (0.0%)
-  Genuine Messages Flagged:       0 / 17  (0.0%)
+  Exact Verdict Match:            80 / 80 (100.0%)
+  Scams Called Low Risk (Worst):  0 / 46  (0.0%)
+  Genuine Messages Flagged:       0 / 30  (0.0%)
 ========================================================================
 ```
 
-* **Zero Regressions Guarantee:** Tests cover Devanagari script, Hinglish phonetic spellings, delivery partner OTPs, electricity disconnection threats, and digital arrest summons.
+* **Zero Regressions Guarantee:** Tests cover Devanagari script, Hinglish phonetic spellings, delivery partner OTPs, electricity disconnection threats, digital arrest summons, e-challan APK packages, and authentic government DBT credit alerts.
 * Any code modification that causes a genuine alert to trigger a false alarm or misses a high-risk scam immediately fails the automated runner with exit code `1`.

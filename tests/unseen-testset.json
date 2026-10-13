@@ -159,5 +159,174 @@
     "lang": "hindi",
     "expected": "low_risk",
     "text": "प्रधानमंत्री आवास योजना की लाभार्थी सूची देखने के लिए आधिकारिक पोर्टल pmaymis.gov.in पर जाएं।"
+  },
+  {
+    "id": "u25",
+    "lang": "english",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "TRAI Notice: Your mobile number is registered in illegal money laundering and pornography cases in Mumbai. Digital arrest warrant issued by CBI. Contact officer on WhatsApp: 9876543210 immediately."
+  },
+  {
+    "id": "u26",
+    "lang": "english",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "Traffic Police Notice: A fine of Rs 1000 is pending against vehicle DL01AB1234. Pay fine before court summons. Download receipt: http://echallan-parivahan.apk"
+  },
+  {
+    "id": "u27",
+    "lang": "english",
+    "expected": "scam",
+    "category": ["bank_threat", "sim_kyc"],
+    "text": "Dear customer, your NHAI FASTag has been blacklisted due to incomplete KYC. Update your FASTag KYC immediately at http://fastag-nhai-update.vip to avoid toll penalty."
+  },
+  {
+    "id": "u28",
+    "lang": "english",
+    "expected": "scam",
+    "category": "bank_threat",
+    "text": "Dear Cardholder, your HDFC Credit Card reward points worth Rs 9,850 are expiring tonight. Redeem points directly as cash to your account at http://hdfc-reward-redeem.top"
+  },
+  {
+    "id": "u29",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "govt_scheme",
+    "text": "पीएम सूर्य घर मुफ्त बिजली योजना: सभी परिवारों को 300 यूनिट फ्री बिजली और ₹78,000 की सब्सिडी मिल रही है। अभी आवेदन करने के लिए 500 रुपये रजिस्ट्रेशन शुल्क जमा करें: 9876543210"
+  },
+  {
+    "id": "u30",
+    "lang": "english",
+    "expected": "scam",
+    "category": "job_offer",
+    "text": "Earn Rs 150 per review by giving 5-star ratings on Google Maps. Daily income Rs 4500 work from home. Contact our HR on Telegram: 9876543210"
+  },
+  {
+    "id": "u31",
+    "lang": "english",
+    "expected": "scam",
+    "category": "authority_threat",
+    "text": "Customs Department: A parcel containing 140 grams of MDMA sent from Mumbai to Taiwan in your name has been intercepted. You are under digital arrest. Call ACP Cyber Crime immediately at 9876543210."
+  },
+  {
+    "id": "u32",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "electricity",
+    "text": "बिजली विभाग चेकिंग टीम: आपके बिजली मीटर का लोड गैरकानूनी पाया गया है। आज रात 10 बजे लाइन काट दी जाएगी और ₹25000 जुर्माना लगेगा। तुरंत जेई साहब से 9876543210 पर बात करें।"
+  },
+  {
+    "id": "u33",
+    "lang": "english",
+    "expected": "scam",
+    "category": "bank_threat",
+    "text": "Dear SBI User, your YONO Netbanking account is blocked. Please install SBI_YONO_Update.apk from http://sbi-yono-net.xyz and update your PAN card immediately."
+  },
+  {
+    "id": "u34",
+    "lang": "hinglish",
+    "expected": "scam",
+    "category": ["info_request", "upi_refund"],
+    "text": "Sir aapka Google Pay cashback 2000 rupaye aaya hai, QR code scan karke UPI PIN dalein aur paisa account mein receive karein."
+  },
+  {
+    "id": "u35",
+    "lang": "hinglish",
+    "expected": "scam",
+    "category": "loan",
+    "text": "Aapka loan due hai. Agar agle 2 ghante mein 5000 nahi bhara to aapke contacts ko gandi photos bhej kar badnaam karenge. Turant call karein 9876543210."
+  },
+  {
+    "id": "u36",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": ["generic_risk", "sim_kyc"],
+    "text": "जिओ और एयरटेल का 3 महीने का 5G फ्री रिचार्ज पाने के लिए यह WhatsApp_Pink.apk डाउनलोड करें और 10 दोस्तों को भेजें।"
+  },
+  {
+    "id": "u37",
+    "lang": "hindi",
+    "expected": "scam",
+    "category": "info_request",
+    "text": "मैं बैंक हेड ऑफिस से बोल रहा हूँ। आपके एटीएम कार्ड की वैधता समाप्त हो रही है। नया कार्ड जारी करने के लिए कार्ड का सीवीवी और एक्सपायरी डेट बताएं।"
+  },
+  {
+    "id": "u38",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Pradhan Mantri Kisan Samman Nidhi: Rs 2000 has been credited to your bank account ending 4321 under 17th installment. -Govt of India (pmkisan.gov.in)"
+  },
+  {
+    "id": "u39",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Challan DL123456789 generated against vehicle DL01AB1234 on 12-Oct-2026. Verify details and pay on official portal https://echallan.parivahan.gov.in. -MoRTH"
+  },
+  {
+    "id": "u40",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "482910 is your OTP for Aadhaar authentication. Valid for 10 minutes. Do not share with anyone. -UIDAI (uidai.gov.in)"
+  },
+  {
+    "id": "u41",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "PNR 2415678901, Train 12555 GORAKHDHAM EXP, Date 15-Oct, Sleeper, CNF S4 23. Wish you a happy journey. Visit irctc.co.in. -IRCTC"
+  },
+  {
+    "id": "u42",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your Income Tax refund of Rs 4,520 for AY 2025-26 has been credited to your account XX5678. Track status on incometax.gov.in. -IT Dept"
+  },
+  {
+    "id": "u43",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "प्रिय उपभोक्ता, आपके बिजली खाता संख्या 1234567890 का ₹1,420 का भुगतान सफलतापूर्वक प्राप्त हुआ। रसीद देखने के लिए uppcl.org पर जाएं। धन्यवाद - यूपीपीसीएल"
+  },
+  {
+    "id": "u44",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your ABHA ID 12-3456-7890-1234 has been created successfully. Download your digital health card at https://abha.abdm.gov.in. -National Health Authority"
+  },
+  {
+    "id": "u45",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Member ID XX123: An amount of Rs 3,450 has been credited to your EPF account for the month of Sep. Check balance at epfindia.gov.in. -EPFO"
+  },
+  {
+    "id": "u46",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "आपके बैंक खाते में एलपीजी घरेलू गैस सिलेंडर की सब्सिडी ₹300 सफलतापूर्वक जमा कर दी गई है। -आईओसीएल (iocl.com)"
+  },
+  {
+    "id": "u47",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your request for Do Not Disturb (DND) registration on mobile number 9876543210 has been processed successfully. Registration ID: TRAI-9821."
+  },
+  {
+    "id": "u48",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Your India Post Speed Post consignment ED123456789IN is out for delivery. Share OTP 3921 with postman upon delivery. -India Post (indiapost.gov.in)"
+  },
+  {
+    "id": "u49",
+    "lang": "hindi",
+    "expected": "low_risk",
+    "text": "सावधानी संदेश: बैंक कभी भी आपसे फोन या मैसेज पर ओटीपी, सीवीवी या पासवर्ड नहीं पूछता। किसी अनजान व्यक्ति को अपनी गोपनीय जानकारी न दें। -पंजाब नेशनल बैंक"
+  },
+  {
+    "id": "u50",
+    "lang": "english",
+    "expected": "low_risk",
+    "text": "Telecom Advisory: TRAI does not disconnect any mobile connection. If you receive suspicious calls regarding SIM disconnection, verify with your service provider."
   }
 ]

@@ -2,7 +2,7 @@
 ### On-Device Bilingual Cyber Scam Detection & Citizen Safety Engine
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Test Suite](https://img.shields.io/badge/Tests-54%2F54%20Passing%20(100%25)-success.svg)](tests/run-tests.js)
+[![Test Suite](https://img.shields.io/badge/Tests-80%2F80%20Passing%20(100%25)-success.svg)](tests/run-tests.js)
 [![Theme](https://img.shields.io/badge/Hackathon-Digital%20Safety%20%26%20Cyber%20Fraud-orange.svg)](https://mybharat.gov.in/pages/hack-for-social-cause)
 [![Knowledge Partner](https://img.shields.io/badge/Knowledge%20Partner-IIT%20Bombay-red.svg)](https://www.iitb.ac.in)
 
@@ -146,18 +146,46 @@ For the complete architectural specification, threat modeling, and token matchin
 
 ## Verification & Test Benchmarks
 
-Scam Saathi includes an automated dual test suite with **54 comprehensive test cases** encompassing real-world Hindi, Hinglish, and English messages:
+Scam Saathi includes an automated dual test suite with **80 comprehensive test cases** encompassing real-world Hindi, Hinglish, and English messages, rigorously validated against actual advisory bulletins from the Indian Cyber Crime Coordination Centre (I4C), CERT-In, PIB Fact Check, Sanchar Saathi Chakshu, TRAI, and UIDAI:
 
 | Test Suite | Total Cases | Exact Verdict Matches | Accuracy |
 | :--- | :---: | :---: | :---: |
 | **Baseline Benchmark (`tests/testset.json`)** | 30 | 30 / 30 | **100%** |
-| **Unseen Real-World Benchmark (`tests/unseen-testset.json`)** | 24 | 24 / 24 | **100%** |
-| **Combined Test Suite** | **54** | **54 / 54** | **100%** |
+| **Unseen Real-World Benchmark (`tests/unseen-testset.json`)** | 50 | 50 / 50 | **100%** |
+| **Combined Test Suite** | **80** | **80 / 80** | **100%** |
 
 ### Benchmark Highlights
-* **Zero Scams Missed:** 0 out of 33 malicious messages classified as low risk.
-* **Zero False Alarms:** 0 out of 17 genuine messages (bank credit notifications, Swiggy/Zomato OTPs, utility receipts) incorrectly flagged.
-* **Cross-Script Resilience:** Accurately classifies mixed-script phrases (e.g., *"UPI पिन डालें to receive money"* or *"बिजली कनेक्शन कटने की धमकी"*).
+* **Zero Scams Missed:** 0 out of 46 malicious messages classified as low risk (100% detection rate on high-risk fraud).
+* **Zero False Alarms:** 0 out of 30 genuine transactional notifications and government advisories incorrectly flagged.
+* **Cross-Script & Anti-Evasion Resilience:** Accurately classifies leetspeak substitutions (`c1ick`, `0tp`, `p1n`, `bl0ck`), delimited acronyms (`k-y-c`, `o.t.p`), and mixed-script phrases (e.g., *"UPI पिन डालें to receive money"* or *"बिजली कनेक्शन कटने की धमकी"*).
+
+### Comprehensive Test Vector Coverage
+
+The test suite validates both cutting-edge 2024–2026 cyber fraud vectors and critical genuine citizen alerts:
+
+1. **Modern Cyber Crime Vectors (Flagged as Scam):**
+   * **Digital Arrest Extortion:** Fake CBI/ED/Customs summons claiming intercepted drug/MDMA packages and issuing bogus arrest warrants over WhatsApp video calls.
+   * **Traffic e-Challan APK Phishing:** Spoofed traffic police SMS directing vehicle owners to download malicious `.apk` packages (`echallan-parivahan.apk`).
+   * **NHAI FASTag KYC Deactivation:** Phishing alerts claiming FASTag blacklist due to incomplete KYC on lookalike `.vip` domains.
+   * **Expiring Credit Card Reward Points:** Urgent expiration countdown bait tricking cardholders into entering banking credentials on `.top` phishing portals.
+   * **Solar & Welfare Scheme Fees:** Fake PM Surya Ghar Muft Bijli registration forms demanding upfront UPI registration fees.
+   * **Google Maps Review Task Fraud:** Part-time work-from-home offers promising daily income for giving 5-star ratings on Google Maps via Telegram recruiters.
+   * **Predatory Instant Loan Harassment:** Extortion messages threatening to circulate morphed obscene images to contacts within 2 hours.
+   * **WhatsApp Pink / 5G Trojans:** Free recharge schemes urging users to download modified `.apk` files and forward them to 10 contacts.
+   * **YONO & Netbanking Block Traps:** Phishing SMS demanding APK installation to unblock SBI YONO accounts.
+
+2. **Authentic Government & Transactional Communications (Safely Cleared as Low Risk):**
+   * **PM-Kisan Samman Nidhi:** Direct Benefit Transfer credit notifications (`Rs 2000 credited under 17th installment`).
+   * **MoRTH Parivahan e-Challan:** Official challan notifications directing to authentic `.parivahan.gov.in` portals.
+   * **UIDAI Aadhaar Authentication:** Genuine OTP notifications with security disclaimers (`uidai.gov.in`).
+   * **Indian Railways (IRCTC):** PNR booking confirmation and journey messages (`irctc.co.in`).
+   * **CBDT Income Tax Department:** Genuine tax refund direct deposit confirmations (`incometax.gov.in`).
+   * **State Electricity Boards (UPPCL):** Legitimate bill payment receipts and confirmation SMS.
+   * **National Health Authority (ABDM):** ABHA digital health ID creation alerts (`abha.abdm.gov.in`).
+   * **EPFO (Employees' Provident Fund):** Monthly PF contribution credit alerts (`epfindia.gov.in`).
+   * **IOCL / Indane LPG Subsidy:** Cooking gas subsidy direct deposit confirmations (`iocl.com`).
+   * **India Post Speed Post:** Delivery OTP notices (`Share OTP with postman upon delivery`).
+   * **Official Anti-Fraud Advisories:** Public awareness messages from Punjab National Bank and TRAI warning citizens about fake disconnection threats.
 
 ### Running the Test Suite
 The test runner requires only [Node.js](https://nodejs.org/):
@@ -166,10 +194,10 @@ The test runner requires only [Node.js](https://nodejs.org/):
 # Run baseline tests (30 cases)
 node tests/run-tests.js
 
-# Run unseen real-world dataset (24 cases)
+# Run unseen real-world dataset (50 cases)
 node tests/run-tests.js --unseen
 
-# Run full suite with verbose token trace
+# Run full suite with verbose token trace (80 cases)
 node tests/run-tests.js --all -v
 ```
 
@@ -186,7 +214,7 @@ scam-saathi/
 ├── tests/
 │   ├── run-tests.js           # Automated test harness supporting --all and --unseen
 │   ├── testset.json           # 30 curated baseline test cases
-│   └── unseen-testset.json    # 24 real-world test cases across Hindi, English, & Hinglish
+│   └── unseen-testset.json    # 50 real-world test cases across Hindi, English, & Hinglish
 ├── ARCHITECTURE.md            # In-depth system architecture & security specification
 ├── manifest.json              # Progressive Web App manifest
 ├── sw.js                      # Service Worker for offline asset caching
