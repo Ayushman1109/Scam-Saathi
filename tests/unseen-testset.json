@@ -436,8 +436,23 @@
     "expected": "scam",
     "category": "ponzi_investment",
     "text": "A guy told me to send money on qr to triple money"
+  },
+  {
+    "id": "u67",
+    "lang": "english",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "A guy told me that if I give him money he will 2x it in 25 days"
+  },
+  {
+    "id": "u68",
+    "lang": "english",
+    "expected": "scam",
+    "category": "ponzi_investment",
+    "text": "Turn Rs 1000 into Rs 2000 in 24 hours guaranteed"
   }
 ]
+
 
 
 

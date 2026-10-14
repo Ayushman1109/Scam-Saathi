@@ -308,6 +308,49 @@
       }
     });
 
+    // (a.2) Layer 1: Structural Intent & Multiplier Abstraction
+    // Detects structural multiplier scams, arbitrage promises, and Action+Multiplier intent pairing
+    var MULTIPLIER_ASSET_RE = /\b(?:\d+\s*x|double|triple|quadruple|multiply|grow)\s+(?:my|your|his|her|their|our|the|this)?\s*(?:money|cash|deposit|investment|funds|amount|savings|rupees|rs|paisa|paise)\b/i;
+    var MULTIPLIER_ASSET_HI = /(?:^|[^\p{L}\p{N}])(?:\d+|२|३|५|१०)?\s*(?:गुना|x|डबल|ट्रिपल|दोगुना|तिगुना)\s*(?:पैसा|पैसे|रुपये|रुपए|रकम|डिपॉजिट|इन्वेस्टमेंट)(?=$|[^\p{L}\p{N}])/u;
+    var MULTIPLIER_ASSET_BN = /(?:^|[^\p{L}\p{N}])(?:\d+|২|৩|৫|১০)?\s*(?:গুণ|x|ডাবল|ট্রিপল|দ্বিগুণ|তিনগুণ)\s*(?:টাকা|পয়সা|অর্থ|আমানত|বিনিয়োগ)(?=$|[^\p{L}\p{N}])/u;
+
+    var ARBITRAGE_RE = /\b(?:turn|convert|grow|change|invest|give|send|pay)\s+(?:(?:rs\.?|inr|₹)\s*)?\d+[kK]?\s*(?:into|to\s+get|and\s+get|for|to\s+turn\s+into)\s+(?:(?:rs\.?|inr|₹)\s*)?\d+[kK]?\b/i;
+
+    var SLOT_A_RE = /\b(?:(?:give|send|transfer|pay|invest|deposit|put)(?:\s+(?:him|her|them|me|us))?(?:\s+(?:some|\d+|any))?\s*(?:money|cash|funds|amount|savings|deposit|rupees|rs\.?|inr|₹)|send\s+(?:on\s+)?qr|pay\s+(?:on\s+)?qr|scan\s+qr|send\s+(?:on\s+)?upi|pay\s+(?:on\s+)?upi|transfer\s+(?:on\s+)?upi|qr\s+(?:code\s+)?to\s+pay|paise?\s+(?:do|de|dena|bhejo?|bhej|transfer|lagao)|rupaye?\s+(?:do|de|bhejo?)|qr\s+(?:par|pe)\s+bhejo?|upi\s+(?:par|pe)\s+bhejo?)\b/i;
+    var SLOT_A_UNICODE = /(?:^|[^\p{L}\p{N}])(?:पैसे?\s+(?:दो|दें|भेजो?|भेजें|लगाओ|डालो)|रुपये?\s+(?:दो|भेजो?)|টাকা\s*(?:দিন|পাঠান|ট্রান্সফার|দিন\s*না)|পয়সা\s*দিন)(?=$|[^\p{L}\p{N}])/u;
+
+    var SLOT_B_RE = /\b(?:\d+\s*x\b|double|triple|quadruple|multiply|multiplying|doubling|tripling|dugna|doguna|tinguna|teenguna|guaranteed\s+(?:returns?|profits?)|daily\s+profit|quick\s+profit|make\s+(?:you\s+)?rich|grow\s+(?:your\s+)?money|get\s+rich)\b/i;
+    var SLOT_B_UNICODE = /(?:^|[^\p{L}\p{N}])(?:\d+\s*गुना|\d+\s*গুণ|डबल|ट्रिपल|दोगुना|तिगुना|तीन\s*गुना|ডাবল|ট্রিপল|দ্বিগুণ|তিনগুণ|নিশ্চিত\s*লাভ|मुनाफा)(?=$|[^\p{L}\p{N}])/u;
+
+    var structuralHit = null;
+    var m1 = raw.match(MULTIPLIER_ASSET_RE) || raw.match(MULTIPLIER_ASSET_HI) || raw.match(MULTIPLIER_ASSET_BN);
+    if (m1) {
+      structuralHit = m1[0].trim();
+    } else {
+      var m2 = raw.match(ARBITRAGE_RE);
+      if (m2) {
+        structuralHit = m2[0].trim();
+      } else {
+        var matchA = raw.match(SLOT_A_RE) || raw.match(SLOT_A_UNICODE);
+        var matchB = raw.match(SLOT_B_RE) || raw.match(SLOT_B_UNICODE);
+        if (matchA && matchB) {
+          structuralHit = matchA[0].trim() + " ... " + matchB[0].trim();
+        }
+      }
+    }
+
+    if (structuralHit) {
+      if (!cats.ponzi_investment) {
+        cats.ponzi_investment = {
+          score: W.strong,
+          hits: [{ phrase: structuralHit, level: "strong", points: W.strong }]
+        };
+      } else {
+        cats.ponzi_investment.hits.push({ phrase: structuralHit, level: "strong", points: W.strong });
+        cats.ponzi_investment.score = Math.max(cats.ponzi_investment.score, W.strong);
+      }
+    }
+
     // (b) generic signals
     var signals = [];
     var link = linkSignals(raw);

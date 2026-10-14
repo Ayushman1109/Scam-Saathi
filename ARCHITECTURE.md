@@ -120,6 +120,13 @@ To prevent deliberate typo evasion (e.g., `updte` for `update`, `blok` for `bloc
 * Roman words of 8 or more letters allow a Levenshtein edit distance of $\le 2$.
 * Words of 4 letters or fewer, numerical digits, and short Devanagari words require exact matching to prevent false collisions (e.g., distinguishing `bank` from `band`).
 
+### 3.5 Structural Intent & Multiplier Abstraction (Layer 1)
+To bridge the classic *Lexical vs. Semantic gap* without introducing heavy neural network dependencies, Scam Saathi implements a **Structural Intent Analysis** layer directly in [engine.js](js/engine.js):
+* **Multiplier & Asset Regex:** Detects any numerical multiplier (`\b\d+\s*x\b`, `double`, `triple`, `quadruple`, `multiply`, `grow`) combined with asset classes (`money`, `cash`, `deposit`, `investment`, `funds`, `savings`, `rupees`, `rs`, `পয়সা`, `টাকা`).
+* **Arbitrage Ratio Matching:** Captures financial doubling promises of the form `turn/invest/send X into/for Y` (e.g., *"turn Rs 1000 into Rs 2000"* or *"send 500 get 1500"*).
+* **Intent-Slot Pairing:** Evaluates the co-occurrence of **Slot A (Value Transfer / Payment Action)** (`give/send/pay money`, `send on QR`, `pay on UPI`, `QR par bhejo`, `টাকা দিন/পাঠান`) with **Slot B (Unrealistic Gain / Multiplier)** (`2x`, `3x`, `10x`, `guaranteed return`, `make you rich`, `তিনগুণ`, `दोगुना`).
+* When detected, this activates the `ponzi_investment` category with strong points ($W_{\text{strong}} = 5.0$) and surfaces the exact conversational phrase as cited evidence in the warning signs breakdown.
+
 ---
 
 ## 4. Scoring Heuristics & Mathematical Formulation
