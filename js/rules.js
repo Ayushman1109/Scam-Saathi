@@ -468,9 +468,12 @@
           "kbc lucky draw", "kbc lottery", "kbc jeet", "lucky draw winner",
           "you have won", "youve won", "you won prize", "you won cash", "you have won lottery", "won lucky draw", "won cash prize", "selected in lucky draw", "congratulations you won",
           "aap jeet gaye", "lakh jeete", "lakh jeet", "laakh jeete", "laakh jeet",
+          "anniversary gift", "anniversary reward", "anniversary celebration", "free gift", "gift voucher",
+          "claim here", "claim now", "claim your gift", "claim your reward", "claim your prize", "collect here",
+          "i just got", "just received gift",
           "आप जीत गए", "आपने जीता", "आपने लॉटरी जीती", "लॉटरी जीती", "लॉटरी जीत", "लॉटरी लगी", "लॉटरी निकली",
-          "इनाम जीता", "लाख जीते", "लाख जीत", "लकी ड्रा में जीते", "इनाम पाने के लिए टैक्स",
-          "লটারি জিতেছেন", "আপনি জিতেছেন", "পুরস্কার জিতেছেন", "লাকি ড্র বিজয়ী", "কেবিসি লটারি", "ইনাম পেয়েছেন", "লটারি পেয়েছেন"
+          "इनाम जीता", "लाख जीते", "लाख जीत", "लकी ड्रा में जीते", "इनाम पाने के लिए टैक्स", "एनिवर्सरी गिफ्ट", "फ्री गिफ्ट", "क्लेम करें",
+          "লটারি জিতেছেন", "আপনি জিতেছেন", "পুরস্কার জিতেছেন", "লাকি ড্র বিজয়ী", "কেবিসি লটারি", "ইনাম পেয়েছেন", "লটারি পেয়েছেন", "এনভার্সারি গিফট", "উপহার পান"
         ],
         medium: [
           "lottery", "लॉटरी", "lucky draw", "लकी ड्रा", "claim prize", "claim your prize", "claim your winning",
@@ -834,7 +837,8 @@
         "link par", "link pe", "लिंक पर", "लिंक खोलें", "open link", "visit link",
         "verify", "contact on whatsapp", "message on whatsapp", "whatsapp us", "whatsapp par",
         "सत्यापित करें", "व्हाट्सएप पर संपर्क", "व्हाट्सएप पर भेजें",
-        "ক্লিক করুন", "ক্লিক", "ডাউনলোড করুন", "ডাউনলোড", "ইনস্টল করুন", "ইনস্টল", "লিঙ্ক খুলুন", "হোয়াটসঅ্যাপে যোগাযোগ", "হোয়াটসঅ্যাপে পাঠান"
+        "ক্লিক করুন", "ক্লিক", "ডাউনলোড করুন", "ডাউনলোড", "ইনস্টল করুন", "ইনস্টল", "লিঙ্ক খুলুন", "হোয়াটসঅ্যাপে যোগাযোগ", "হোয়াটসঅ্যাপে পাঠান",
+        "claim", "claim here", "claim now", "collect here", "क्लेम करें", "দাবি করুন"
       ],
       // A link on one of these domains (or a subdomain of them) is NOT penalised. Extend as needed.
       trustedDomains: [
@@ -851,7 +855,8 @@
       brandWords: [
         "sbi", "kyc", "kisan", "pmkisan", "aadhaar", "aadhar", "uidai", "epfo", "irctc", "gov", "india",
         "paytm", "phonepe", "bijli", "electricity", "upi", "bank", "refund", "loan", "lottery", "kbc",
-        "jio", "airtel", "customs", "narcotics", "discom", "fastag", "reward", "yono", "challan"
+        "jio", "airtel", "customs", "narcotics", "discom", "fastag", "reward", "yono", "challan",
+        "google", "gpay", "amazon", "flipkart", "tata"
       ]
     },
 

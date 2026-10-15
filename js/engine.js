@@ -351,6 +351,26 @@
       }
     }
 
+    // (a.3) Generic Viral Giveaway & Fake Reward Phishing Detection
+    // Catches "Google Pay 9th Anniversary Gift ₹6,000", "Amazon Free Gift Claim here", etc.
+    var REWARD_REGEX = /\b(?:(?:anniversary|jubilee|celebration|birthday|festival|diwali|puja|pooja|new\s*year|eid|christmas|special)\s+(?:gift|reward|bonus|prize|cash|offer)|(?:claim|collect|get)\s+(?:here|now|your\s+gift|your\s+reward|your\s+prize|it\s+here|it\s+now|yours\s+now)|i\s+(?:just\s+)?(?:got|received)\s+(?:₹|rs\.?|inr)?\s*\d+|(?:gift|reward|prize|cashback|bonus|voucher)\s*(?:of\s*)?(?:₹|rs\.?|inr)?\s*\d+|free\s+(?:recharge|gift|smartphone|laptop|iphone)|selected\s+for\s+(?:free\s+)?(?:gift|reward|prize))\b/i;
+    var REWARD_UNICODE = /(?:^|[^\p{L}\p{N}])(?:(?:दीवाली|त्योहार|पूजा|वार्षिकोत्सव|ईद)\s*(?:उपहार|गिफ्ट|ऑफर)|(?:পূজা|উৎসব|ঈদ|বার্ষিকী)\s*(?:অফার|উপহার|পুরস্কার)|(?:गिफ्ट|इनाम|उपहार|रुपये|রিচার্জ|পুরস্কার|উপহার)\s*(?:पाएं|मिलें|क्लेम|দাবি\s*করুন|সংগ্রহ\s*করুন|পান)|ফ্রি\s*রিচার্জ|বিনামূল্যে\s*(?:উপহার|স্মার্টফোন))(?=$|[^\p{L}\p{N}])/u;
+
+    var rewardMatch = raw.match(REWARD_REGEX) || raw.match(REWARD_UNICODE);
+    var hasUntrustedLink = linkSignals(raw) !== null;
+    if (rewardMatch && (hasUntrustedLink || anyPhrase(tokens, G.action))) {
+      var rSnippet = rewardMatch[0].trim();
+      if (!cats.lottery) {
+        cats.lottery = {
+          score: W.strong,
+          hits: [{ phrase: rSnippet, level: "strong", points: W.strong }]
+        };
+      } else {
+        cats.lottery.hits.push({ phrase: rSnippet, level: "strong", points: W.strong });
+        cats.lottery.score = Math.max(cats.lottery.score, W.strong);
+      }
+    }
+
     // (b) generic signals
     var signals = [];
     var link = linkSignals(raw);
